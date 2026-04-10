@@ -7,11 +7,10 @@
 <body>
 <?php
 include("funciones.php");
-$link=conectarbd();
-$consultatp="SELECT nomb_ent,nit_ent FROM sisbol.entidad";
-//echo $consultatp;
-$consultatp=pg_query($link,$consultatp);
-$rowtp=pg_fetch_array($consultatp);
+$link = conectarbd();
+$consultatp = "SELECT nomb_ent, nit_ent FROM entidad";
+$consultatp = mysqli_query($link, $consultatp);
+$rowtp = mysqli_fetch_array($consultatp);
 ?>
 <table class='Tbl0' width='100%'>
   <tr>
@@ -24,10 +23,6 @@ $rowtp=pg_fetch_array($consultatp);
     <td align='right' width="30%"><img src='img/logosisbol.PNG' width='40' height='20'></td>
   </tr>
 </table>
-<!--<table class='Tbl0' width='100%'>
-  <tr>
-    <td width='80%' class='Td2' align='left'><b><h1>BOLETAS</td>
-  </tr>
-</table>-->
+
 </body>
 </html>

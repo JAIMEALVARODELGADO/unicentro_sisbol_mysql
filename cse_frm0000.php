@@ -16,37 +16,44 @@ function validar(){
 </script>
 </HEAD>
 <?php
-//Aqui cargo las funciones 
+
+// Aquí cargo las funciones
 include("funciones.php");
-$link=conectarbd();
-//echo $link;
+$link = conectarbd();
 
-$clave=MD5($_POST['clave']);
-$consulta="SELECT codi_ucs,logi_ucs,clav_ucs,tipo_ucs FROM sisbol.u_cliseb WHERE logi_ucs='$_POST[usuario]' and clav_ucs='$clave' and esta_ucs='A'";
-//echo $consulta;
-$consulta=pg_query($link,$consulta);
+$clave = md5($_POST['clave']);
+$usuario = mysqli_real_escape_string($link, $_POST['usuario']);
 
-if(pg_num_rows($consulta)==1){
-  $row=pg_fetch_array($consulta);
-  $_SESSION['Gcodi_ucs']=$row['codi_ucs'];
-  ?>
+$consulta = "SELECT codi_ucs, logi_ucs, clav_ucs, tipo_ucs 
+             FROM u_cliseb 
+             WHERE logi_ucs='$usuario' 
+             AND clav_ucs='$clave' 
+             AND esta_ucs='A'";
+
+
+$resultado = mysqli_query($link, $consulta);
+
+if (mysqli_num_rows($resultado) == 1) {
+    $row = mysqli_fetch_array($resultado);
+    $_SESSION['Gcodi_ucs'] = $row['codi_ucs'];
+    ?>
     <FRAMESET rows="15%,*" framespacing="0" border="1" frameborder="0"> 
-      <FRAME SRC=cse_top.php NAME=fr01>
+        <FRAME SRC=cse_top.php NAME=fr01>
         <FRAMESET cols="15%,*" framespacing="0" border="1" frameborder="0"> 
-          <FRAME SRC=cse_left2.php NAME=fr02>
-          <FRAME SRC=cse_fondo.html NAME=fr03>
+            <FRAME SRC=cse_left2.php NAME=fr02>
+            <FRAME SRC=cse_fondo.html NAME=fr03>
         </FRAMESET><noframes></noframes> 
     </FRAMESET><noframes></noframes>
-  <?php
+    <?php
+} else {
+    ?>
+    <script language='javascript'>
+        validar();
+    </script>
+    <?php
 }
-else{
-  ?>
-    <script languaje='javascript'>
-      validar();
-	</script>
-  <?php
-}
-pg_free_result($consulta);
-pg_close($link);
+
+mysqli_free_result($resultado);
+mysqli_close($link);
 ?>
-</HTML>
+</html>
