@@ -57,7 +57,7 @@ if(!empty($_GET['codi_bol'])){//Esta variable viene de cse_ecompra1111.php
   $condicion=$condicion."bol.codi_bol='$_GET[codi_bol]' and ";}
 $condicion=substr($condicion,0,(strlen($condicion)-5));
 
-$consulta="SELECT bol.codi_bol,bol.fech_bol,bol.impr_bol,bol.anul_bol,cl.nrod_cli,concat(cl.nomb_cli,' ',cl.apel_cli) as nombre FROM sisbol.boleta as bol INNER JOIN sisbol.cliente as cl ON cl.codi_cli=bol.codi_cli";
+$consulta="SELECT bol.codi_bol,bol.fech_bol,bol.impr_bol,bol.anul_bol,cl.nrod_cli,concat(cl.nomb_cli,' ',cl.apel_cli) as nombre FROM boleta as bol INNER JOIN cliente as cl ON cl.codi_cli=bol.codi_cli";
 if(!empty($condicion)){
   $consulta=$consulta." WHERE ".$condicion;
 }
@@ -66,8 +66,8 @@ if(empty($orden)){
 }
 $consulta=$consulta." ORDER BY $orden";
 //echo "<br>".$consulta;
-$consultacom=pg_query($link,$consulta);
-if(pg_num_rows($consultacom)==0){
+$consultacom=mysqli_query($link,$consulta);
+if(mysqli_num_rows($consultacom)==0){
   echo "<table class='Tbl0'>";
   echo "<tr><td class='Td1' align='center'>Cliente No Encontrados</td></tr>";
   echo "</table>";
@@ -85,13 +85,13 @@ else{
     <th class='Th0' width='10%'>Valor</th>
     <th class='Th0' width='10%'>Estado</th>
 	<?php
-	while($rowcom=pg_fetch_array($consultacom)){
+	while($rowcom=mysqli_fetch_array($consultacom)){
           $valor=0;
-          $consultacom2="SELECT SUM(valo_com) AS valor FROM sisbol.compra WHERE codi_bol='$rowcom[codi_bol]'";
+          $consultacom2="SELECT SUM(valo_com) AS valor FROM compra WHERE codi_bol='$rowcom[codi_bol]'";
           //echo $consultacom2;
-          $consultacom2=pg_query($link,$consultacom2);
-          if(pg_num_rows($consultacom2)<>0){
-              $rowcom2=pg_fetch_array($consultacom2);
+          $consultacom2=mysqli_query($link,$consultacom2);
+          if(mysqli_num_rows($consultacom2)<>0){
+              $rowcom2=mysqli_fetch_array($consultacom2);
               $valor=$rowcom2['valor'];
           }
 	  echo "<tr>";
@@ -120,13 +120,13 @@ else{
 	  echo "</tr>";
           if($rowcom['codi_bol']==$expan_){
               $consultadoc="SELECT com.ndoc_com,com.fech_com,com.valo_com,loc.desc_tip as local
-                  FROM sisbol.compra AS com
-                  INNER JOIN sisbol.tipo AS loc ON loc.codi_tip=com.loca_com
+                  FROM compra AS com
+                  INNER JOIN tipo AS loc ON loc.codi_tip=com.loca_com
                   WHERE codi_bol='$rowcom[codi_bol]'";
               //echo "<br>".$consultadoc;
-              $consultadoc=pg_query($link,$consultadoc);
-              if(pg_num_rows($consultadoc)<>0){
-                  while($rowdoc=pg_fetch_array($consultadoc)){
+              $consultadoc=mysqli_query($link,$consultadoc);
+              if(mysqli_num_rows($consultadoc)<>0){
+                  while($rowdoc=mysqli_fetch_array($consultadoc)){
                       echo "<tr>";
                       echo "<td class='Td2' align='right' colspan='4'></td>";
                       echo "<td class='Td2' align='right'>$rowdoc[ndoc_com]</td>";
@@ -155,7 +155,7 @@ echo "<input type='hidden' name='id_camp' value='$id_camp'>";
 ?>
 </form>
 <?php
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

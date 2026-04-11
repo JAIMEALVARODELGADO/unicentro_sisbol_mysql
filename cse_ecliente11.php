@@ -45,12 +45,12 @@ function buscar(){
 include("funciones.php");
 $link=conectarbd();
 $consultacli="select codi_cli,tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,prof_cli,punt_cli,cliente.id_barrio,descripcion
-                          from sisbol.cliente 
-                          LEFT JOIN sisbol.vw_barrio ON vw_barrio.id_barrio=cliente.id_barrio
+                          from cliente 
+                          LEFT JOIN vw_barrio ON vw_barrio.id_barrio=cliente.id_barrio
                           where codi_cli='$_GET[codi_cli]'";
 //echo $consultacli;
-$consultacli=pg_query($link,$consultacli);
-$rowcli=pg_fetch_array($consultacli);
+$consultacli=mysqli_query($link,$consultacli);
+$rowcli=mysqli_fetch_array($consultacli);
 
 $codi_cli=$_GET['codi_cli'];
 $tpid_cli=$rowcli['tpid_cli'];
@@ -84,9 +84,9 @@ $punt_cli=$rowcli['punt_cli'];
     <td class='Td2' width='15%' align='left'><select name='tpid_cli'>
 	<option value=''>
 	<?php
-	  $consultatp="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='01'";
-    $consultatp=pg_query($link,$consultatp);
-	  while($rowtp=pg_fetch_array($consultatp)){
+	  $consultatp="SELECT codi_tip,desc_tip FROM tipo WHERE codi_gru='01'";
+    $consultatp=mysqli_query($link,$consultatp);
+	  while($rowtp=mysqli_fetch_array($consultatp)){
 	    echo "<option value='$rowtp[codi_tip]'>$rowtp[desc_tip]";
 	  }
 	?>
@@ -133,9 +133,9 @@ $punt_cli=$rowcli['punt_cli'];
 	<td class='Td2' align='left'><select name='prof_cli' <?php echo $disp;?>>
 	<option value=''>
 	<?php
-	  $consultapr="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='04'";
-    $consultapr=pg_query($link,$consultapr);
-	  while($rowpr=pg_fetch_array($consultapr)){
+	  $consultapr="SELECT codi_tip,desc_tip FROM tipo WHERE codi_gru='04'";
+    $consultapr=mysqli_query($link,$consultapr);
+	  while($rowpr=mysqli_fetch_array($consultapr)){
 	    echo "<option value='$rowpr[codi_tip]'>$rowpr[desc_tip]";
 	  }
 	?>
@@ -167,9 +167,9 @@ document.form1.prof_cli.value='<?php echo $prof_cli;?>';
 
 </form>
 <?
-pg_free_result($consultatp);
-pg_free_result($consultacli);
-pg_close($link);
+mysqli_free_result($consultatp);
+mysqli_free_result($consultacli);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

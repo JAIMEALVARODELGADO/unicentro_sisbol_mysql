@@ -13,11 +13,11 @@ function cargar(codi_,camp_) {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="UPDATE sisbol.boleta SET anul_bol='S' WHERE codi_bol='$_GET[codi_bol]'";
+$sql="UPDATE boleta SET anul_bol='S' WHERE codi_bol='$_GET[codi_bol]'";
 //echo $sql;
-pg_query($link,$sql);
+mysqli_query($link,$sql);
 //echo mysql_affected_rows();
-pg_close($link);
+mysqli_close($link);
 echo "<body onload='javascript:cargar($_GET[codi_bol],$_GET[id_camp])'>";
 ?>
 </body>

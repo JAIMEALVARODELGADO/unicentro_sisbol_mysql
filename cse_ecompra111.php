@@ -87,13 +87,13 @@ function atras()
 include("funciones.php");
 $link=conectarbd();
 $consulta="SELECT bol.fech_bol,cl.codi_cli,cl.tpid_cli,cl.nrod_cli,concat(cl.nomb_cli,' ',cl.apel_cli) as nombre,tp.desc_tip
-           FROM sisbol.boleta as bol
-	   INNER JOIN sisbol.cliente as cl ON cl.codi_cli=bol.codi_cli
-	   INNER JOIN sisbol.tipo as tp ON tp.codi_tip=cl.tpid_cli
+           FROM boleta as bol
+	   INNER JOIN cliente as cl ON cl.codi_cli=bol.codi_cli
+	   INNER JOIN tipo as tp ON tp.codi_tip=cl.tpid_cli
 	   WHERE bol.codi_bol='$_GET[codi_bol]'";
 //echo $consulta;
-$consulta=pg_query($link,$consulta);
-$row=pg_fetch_array($consulta);
+$consulta=mysqli_query($link,$consulta);
+$row=mysqli_fetch_array($consulta);
 ?>
 <table class='Tbl0' width='100%'>
   <tr><td class='Td0' align='center'>Edita Compra</td></tr>
@@ -123,12 +123,12 @@ $row=pg_fetch_array($consulta);
     <th class='Th0'>Valor</th>
     <th class='Th0'>Guardar</th>
     <?php
-    $consultacom="SELECT * FROM sisbol.compra WHERE codi_bol='$_GET[codi_bol]'";
+    $consultacom="SELECT * FROM compra WHERE codi_bol='$_GET[codi_bol]'";
     //echo "<br>".$consultacom;
-    $consultacom=pg_query($link,$consultacom);
-    if(pg_num_rows($consultacom)){
+    $consultacom=mysqli_query($link,$consultacom);
+    if(mysqli_num_rows($consultacom)){
         $cont_=0;
-        while($rowcom=pg_fetch_array($consultacom)){
+        while($rowcom=mysqli_fetch_array($consultacom)){
             $var_='codi_com'.$cont_;
             echo "<input type='hidden' name='$var_' value='$rowcom[codi_com]'>";
             echo "<tr>";
@@ -138,18 +138,18 @@ $row=pg_fetch_array($consulta);
             //echo $var_;
             echo "<td class='Td2' align='center'><select name='$var_' disabled>";
             echo "<option value=''>";
-            $consultalo="SELECT codi_tip,desc_tip,valo_tip FROM sisbol.tipo WHERE codi_gru='03' ORDER BY valo_tip";
-            $consultalo=pg_query($link,$consultalo);
-            while($rowlo=pg_fetch_array($consultalo)){
+            $consultalo="SELECT codi_tip,desc_tip,valo_tip FROM tipo WHERE codi_gru='03' ORDER BY valo_tip";
+            $consultalo=mysqli_query($link,$consultalo);
+            while($rowlo=mysqli_fetch_array($consultalo)){
                 echo "<option value='$rowlo[codi_tip]'>".$rowlo['valo_tip'].substr($rowlo['desc_tip'],0,15)."</option>";
             }
             echo "</select>";
             $var_='tdoc_com'.$cont_;
             echo "<td class='Td2' align='left'><select name='$var_' disabled>";
             echo "<option value=''>";
-            $consultado="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='02'";
-            $consultado=pg_query($link,$consultado);
-            while($rowdo=pg_fetch_array($consultado)){
+            $consultado="SELECT codi_tip,desc_tip FROM tipo WHERE codi_gru='02'";
+            $consultado=mysqli_query($link,$consultado);
+            while($rowdo=mysqli_fetch_array($consultado)){
                 echo "<option value='$rowdo[codi_tip]'>".$rowdo['desc_tip']."</option>";
             }
             echo "</select>";
@@ -171,8 +171,8 @@ $row=pg_fetch_array($consulta);
             <?php
             $cont_++;
         }
-        pg_free_result($consultalo);
-        pg_free_result($consultado);
+        mysqli_free_result($consultalo);
+        mysqli_free_result($consultado);
     }
     ?>
 </table>
@@ -193,9 +193,9 @@ $row=pg_fetch_array($consulta);
 </table>
 </form>
 <?php
-pg_free_result($consulta);
-pg_free_result($consultacom);
-pg_close($link);
+mysqli_free_result($consulta);
+mysqli_free_result($consultacom);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

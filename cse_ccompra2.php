@@ -125,9 +125,15 @@ if(isset($_POST['punt_cli'])){$punt_cli=$_POST['punt_cli'];}
 if(isset($_POST['id_barrio'])){$punt_cli=$_POST['id_barrio'];}
 
 if (!empty($_POST['nrod_cli']) || !empty($_POST['codi_cli'])) {
-  $codi_cli_esc = mysqli_real_escape_string($link, $_POST['codi_cli']);
-  $tpid_cli_esc = mysqli_real_escape_string($link, $_POST['tpid_cli']);
-  $nrod_cli_esc = mysqli_real_escape_string($link, $_POST['nrod_cli']);
+  $codi_cli_esc=0;
+  $tpid_cli_esc=0;
+  $nrod_cli_esc=0;
+  if(isset($_POST['codi_cli'])){$codi_cli_esc = mysqli_real_escape_string($link, $_POST['codi_cli']);}
+  if(isset($_POST['tpid_cli'])){$tpid_cli_esc = mysqli_real_escape_string($link, $_POST['tpid_cli']);}
+  if(isset($_POST['nrod_cli'])){$nrod_cli_esc = mysqli_real_escape_string($link, $_POST['nrod_cli']);}
+  //$codi_cli_esc = mysqli_real_escape_string($link, $_POST['codi_cli']);
+  //$tpid_cli_esc = mysqli_real_escape_string($link, $_POST['tpid_cli']);
+  //$nrod_cli_esc = mysqli_real_escape_string($link, $_POST['nrod_cli']);
 
   if (!empty($_POST['codi_cli'])) {
       $consultacli = "SELECT codi_cli, tpid_cli, nrod_cli, exped_cli, nomb_cli, apel_cli, dire_cli, tele_cli, fnac_cli, sexo_cli, emai_cli, prof_cli, punt_cli, id_barrio
@@ -274,11 +280,9 @@ document.form1.prof_cli.value='<?php echo $prof_cli;?>';
 
 </form>
 <?
-pg_free_result($consultatp);
-//mysql_free_result($consultalo);
-//mysql_free_result($consultado);
-pg_free_result($consultapr);
-pg_close($link);
+mysqli_free_result($consultatp);
+mysqli_free_result($consultapr);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

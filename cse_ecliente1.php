@@ -64,8 +64,8 @@ if(!empty($apel_cli)){
 
 $condicion=substr($condicion,0,(strlen($condicion)-5));
 $consulta="SELECT codi_cli,nrod_cli,nomb_cli,apel_cli,CONCAT(dire_cli,' ',nombre_bar) AS dire_cli,tele_cli,punt_cli,fnac_cli,sexo_cli,emai_cli 
-FROM sisbol.cliente
-LEFT JOIN sisbol.barrio ON barrio.id_barrio=cliente.id_barrio";
+FROM cliente
+LEFT JOIN barrio ON barrio.id_barrio=cliente.id_barrio";
 if(!empty($condicion)){
   $consulta=$consulta." WHERE ".$condicion;
 }
@@ -77,8 +77,8 @@ if(empty($orden)){
 }
 $consulta=$consulta." ORDER BY $orden";
 //echo $consulta;
-$consultacli=pg_query($link,$consulta);
-if(pg_num_rows($consultacli)==0){
+$consultacli=mysqli_query($link,$consulta);
+if(mysqli_num_rows($consultacli)==0){
   echo "<table class='Tbl0'>";
   echo "<tr><td class='Td1' align='center'>Cliente No Encontrados</td></tr>";
   echo "</table>";
@@ -100,7 +100,7 @@ else{
     <th class='Th0'>E-mail</th>
 	<th class='Th0' width='5%'>Puntos</th>    
 	<?php
-	while($rowcli=pg_fetch_array($consultacli)){
+	while($rowcli=mysqli_fetch_array($consultacli)){
 	  echo "<tr>";
 	  echo "<td class='Td2'><a href='cse_ecliente11.php?codi_cli=$rowcli[codi_cli]'><img src='img/32px-Crystal_Clear_device_tablet.png' border=0 height='20' width='20' alt='Editar'></a></td>";
 	  echo "<td class='Td2'>$rowcli[nrod_cli]</td>";
@@ -132,7 +132,7 @@ else{
 
 </form>
 <?php
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>
