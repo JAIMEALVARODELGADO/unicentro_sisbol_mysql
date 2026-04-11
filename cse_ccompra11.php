@@ -23,18 +23,32 @@ else{
 }
 $fech_com=cambiafecha($_POST['fech_com']);
 $hoy=cambiafecha(hoy());
-//$puntos=floor($valo_com/1000);
-//echo $_POST['codigo'];
-if(empty($_POST['codigo'])){
-    $sql_="INSERT INTO sisbol.cliente (tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,prof_cli,id_barrio)
-               VALUES ('$_POST[tpid_cli]','$_POST[nrod_cli]','$_POST[exped_cli]','$_POST[nomb_cli]','$_POST[apel_cli]','$_POST[dire_cli]','$_POST[tele_cli]','$fnac_cli','$_POST[sexo_cli]','$_POST[emai_cli]','$_POST[prof_cli]','$_POST[id_barrio]') RETURNING codi_cli";
-    //echo $sql_;
-    $res=pg_query($link,$sql_);
-    $insert_row = pg_fetch_row($res);
-    $codi_cli = $insert_row[0];
-}
-else{
-    $codi_cli=$_POST['codigo'];
+
+
+if (empty($_POST['codigo'])) {
+
+    $sql_ = "INSERT INTO cliente 
+        (tpid_cli, nrod_cli, exped_cli, nomb_cli, apel_cli, dire_cli, tele_cli, fnac_cli, sexo_cli, emai_cli, prof_cli, id_barrio)
+        VALUES (
+            '".$link->real_escape_string($_POST['tpid_cli'])."',
+            '".$link->real_escape_string($_POST['nrod_cli'])."',
+            '".$link->real_escape_string($_POST['exped_cli'])."',
+            '".$link->real_escape_string($_POST['nomb_cli'])."',
+            '".$link->real_escape_string($_POST['apel_cli'])."',
+            '".$link->real_escape_string($_POST['dire_cli'])."',
+            '".$link->real_escape_string($_POST['tele_cli'])."',
+            '$fnac_cli',
+            '".$link->real_escape_string($_POST['sexo_cli'])."',
+            '".$link->real_escape_string($_POST['emai_cli'])."',
+            '".$link->real_escape_string($_POST['prof_cli'])."',
+            '".$link->real_escape_string($_POST['id_barrio'])."'
+        )";
+
+    mysqli_query($link, $sql_);
+    $codi_cli = mysqli_insert_id($link);
+
+} else {
+    $codi_cli = $_POST['codigo'];
 }
 ?>
 </head>
@@ -57,18 +71,25 @@ if($_POST['opc']==0){
 else{
     $archivo="tmp/bol_".$_POST['codigo'].".txt";
     if(file_exists($archivo)){
-        $sql="INSERT INTO sisbol.boleta (codi_cli,id_camp,esta_bol,impr_bol,anul_bol,fech_bol,usua_bol)
-                   VALUES ('$codi_cli','$_POST[id_camp]','A','N','N','$hoy','$_SESSION[Gcodi_ucs]') RETURNING codi_bol";
-        //echo "<BR>".$sql;
-        $res=pg_query($link,$sql);
-        $insert_row=pg_fetch_row($res);
-        $codi_bol=$insert_row[0];
-        //echo "<br>codigo boleta:   ".$codi_bol;
+        $sql = "INSERT INTO boleta
+        (codi_cli, id_camp, esta_bol, impr_bol, anul_bol, fech_bol, usua_bol)
+        VALUES (
+            '$codi_cli',
+            '{$_POST['id_camp']}',
+            'A',
+            'N',
+            'N',
+            '$hoy',
+            '{$_SESSION['Gcodi_ucs']}'
+        )";
+
+        mysqli_query($link, $sql);
+        $codi_bol = mysqli_insert_id($link);
 
         $total=0;
         $fp = fopen ($archivo, "r" );
         //$reg=0;
-        while (( $data = fgetcsv ( $fp , 1000 , "," )) !== FALSE ) { // Mientras hay líneas que leer...
+        while (( $data = fgetcsv ( $fp , 1000 , "," )) !== FALSE ) { // Mientras hay lï¿½neas que leer...
             //$reg++;
             $i = 0;
             foreach($data as $dato){
@@ -76,39 +97,39 @@ else{
                 $i++ ;
             }
             $placavehi_bol=$campo[0];
-            $sql_="INSERT INTO sisbol.compra(codi_bol,tdoc_com,ndoc_com,fech_com,valo_com,loca_com)
+            $sql_="INSERT INTO compra(codi_bol,tdoc_com,ndoc_com,fech_com,valo_com,loca_com)
                 VALUES($codi_bol,'$campo[2]','$campo[3]','$campo[4]','$campo[5]','$campo[1]')";
-            //echo $sql_;    
-            pg_query($link,$sql_);
+            
+            mysqli_query($link,$sql_);
             $total=$total+$campo[5];
         }
         fclose ($fp);
         unlink($archivo);
         //echo $total;
         //$consultaent="SELECT valxb_ent,nume_bol FROM entidad";
-        $consultaent="SELECT valxb_ent FROM sisbol.entidad";
+        $consultaent="SELECT valxb_ent FROM entidad";
         
-        $consultaent=pg_query($link,$consultaent);
-        $rowent=pg_fetch_array($consultaent);        
+        $consultaent=mysqli_query($link,$consultaent);
+        $rowent=mysqli_fetch_array($consultaent);        
         $nbol=intval($total/$rowent['valxb_ent']);
 
-        $consboleta="SELECT numeroboleta_camp FROM sisbol.campania WHERE id_camp='$_POST[id_camp]'";
-        $consboleta=pg_query($link,$consboleta);
-        $rowbol=pg_fetch_array($consboleta);
+        $consboleta="SELECT numeroboleta_camp FROM campania WHERE id_camp='$_POST[id_camp]'";
+        $consboleta=mysqli_query($link,$consboleta);
+        $rowbol=mysqli_fetch_array($consboleta);
 
-        $sql_="UPDATE sisbol.campania SET numeroboleta_camp=numeroboleta_camp+$nbol WHERE id_camp='$_POST[id_camp]'";
+        $sql_="UPDATE campania SET numeroboleta_camp=numeroboleta_camp+$nbol WHERE id_camp='$_POST[id_camp]'";
         //echo "<br>".$sql_;
-        pg_query($link,$sql_);
+        mysqli_query($link,$sql_);
 
         for($i_=0;$i_<$nbol;$i_++){
             $nume_bol=$rowbol['numeroboleta_camp']+$i_;
-            $sql_="INSERT INTO sisbol.detalle_bol(codi_bol,nume_dbo) values($codi_bol,$nume_bol)";
-            pg_query($link,$sql_);
+            $sql_="INSERT INTO detalle_bol(codi_bol,nume_dbo) values($codi_bol,$nume_bol)";
+            mysqli_query($link,$sql_);
         }
-        pg_free_result($consultaent);
-        $sql="UPDATE sisbol.boleta SET placavehi_bol='$placavehi_bol' WHERE codi_bol='$codi_bol'";
+        mysqli_free_result($consultaent);
+        $sql="UPDATE boleta SET placavehi_bol='$placavehi_bol' WHERE codi_bol='$codi_bol'";
         //echo $sql;
-        pg_query($link,$sql);
+        mysqli_query($link,$sql);
 
     }
     echo "<body>";
@@ -124,7 +145,7 @@ else{
     echo "</tr>";
     echo "</table>";
 }
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

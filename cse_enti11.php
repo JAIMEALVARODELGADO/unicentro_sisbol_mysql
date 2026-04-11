@@ -15,9 +15,21 @@ include("funciones.php");
 $fini_sor=cambiafecha($_POST['fini_sor']);
 $ffin_sor=cambiafecha($_POST['ffin_sor']);
 $link=conectarbd();
-$sql_="UPDATE sisbol.entidad SET nit_ent='$_POST[nit_ent]',nomb_ent='$_POST[nomb_ent]',valxb_ent='$_POST[valxb_ent]',fini_sor='$fini_sor',ffin_sor='$ffin_sor'";
-pg_query($link,$sql_);
-pg_close($link);
+$nit_ent  = mysqli_real_escape_string($link, $_POST['nit_ent']);
+$nomb_ent = mysqli_real_escape_string($link, $_POST['nomb_ent']);
+$valxb_ent = mysqli_real_escape_string($link, $_POST['valxb_ent']);
+$fini_sor = mysqli_real_escape_string($link, $fini_sor);
+$ffin_sor = mysqli_real_escape_string($link, $ffin_sor);
+
+$sql_ = "UPDATE entidad SET 
+         nit_ent   = '$nit_ent',
+         nomb_ent  = '$nomb_ent',
+         valxb_ent = '$valxb_ent',
+         fini_sor  = '$fini_sor',
+         ffin_sor  = '$ffin_sor'";
+
+mysqli_query($link, $sql_);
+mysqli_close($link);
 ?>
 <body onload='javascript:cargar()'>
 </body>

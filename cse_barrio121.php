@@ -11,10 +11,17 @@ function cargar() {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="UPDATE sisbol.barrio SET comuna_bar='$_POST[comuna_bar]',nombre_bar='$_POST[nombre_bar]' WHERE id_barrio='$_POST[id_barrio]'";
-//echo $sql;
-pg_query($link,$sql);
-pg_close($link);
+$comuna_bar = mysqli_real_escape_string($link, $_POST['comuna_bar']);
+$nombre_bar = mysqli_real_escape_string($link, $_POST['nombre_bar']);
+$id_barrio  = mysqli_real_escape_string($link, $_POST['id_barrio']);
+
+$sql = "UPDATE barrio SET 
+        comuna_bar = '$comuna_bar',
+        nombre_bar = '$nombre_bar'
+        WHERE id_barrio = '$id_barrio'";
+
+mysqli_query($link, $sql);
+mysqli_close($link);
 ?>
 <script language='javascript'>
   alert("registro"+<?echo mysql_affected_rows();?>);

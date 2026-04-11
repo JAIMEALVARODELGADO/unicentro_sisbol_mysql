@@ -13,20 +13,32 @@ function cargar() {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$consulta="SELECT codi_ucs FROM sisbol.u_cliseb WHERE iden_ucs='$_POST[iden_ucs]' and codi_ucs<>'$_POST[codi_ucs]'";
-$consulta=pg_query($link,$consulta);
+$iden_ucs = mysqli_real_escape_string($link, $_POST['iden_ucs']);
+$nomb_ucs = mysqli_real_escape_string($link, $_POST['nomb_ucs']);
+$logi_ucs = mysqli_real_escape_string($link, $_POST['logi_ucs']);
+$tipo_ucs = mysqli_real_escape_string($link, $_POST['tipo_ucs']);
+$codi_ucs = mysqli_real_escape_string($link, $_POST['codi_ucs']);
 
-if(pg_num_rows($consulta)==0){
-  $consulta2="UPDATE sisbol.u_cliseb SET iden_ucs='$_POST[iden_ucs]',nomb_ucs='$_POST[nomb_ucs]',logi_ucs='$_POST[logi_ucs]',tipo_ucs='$_POST[tipo_ucs]' WHERE codi_ucs='$_POST[codi_ucs]'";
-  //echo "<br>".$consulta2;
-  $consulta2=pg_query($link,$consulta2);
-  if(!empty($clav_ucs)){
-    $clav_ucs=MD5($clav_ucs);
-    $sql="UPDATE sisbol.u_cliseb SET clav_ucs='$_POST[clav_ucs]' WHERE codi_ucs='$_POST[codi_ucs]'";
-    pg_query($link,$sql);
-  }
-  pg_close($link);
-  echo "<body onload='javascript:cargar()'>";
+$consulta = "SELECT codi_ucs FROM u_cliseb WHERE iden_ucs='$iden_ucs' AND codi_ucs<>'$codi_ucs'";
+$consulta = mysqli_query($link, $consulta);
+
+if (mysqli_num_rows($consulta) == 0) {
+    $consulta2 = "UPDATE u_cliseb SET 
+                  iden_ucs = '$iden_ucs',
+                  nomb_ucs = '$nomb_ucs',
+                  logi_ucs = '$logi_ucs',
+                  tipo_ucs = '$tipo_ucs'
+                  WHERE codi_ucs = '$codi_ucs'";
+    mysqli_query($link, $consulta2);
+
+    if (!empty($_POST['clav_ucs'])) {
+        $clav_ucs = md5($_POST['clav_ucs']);
+        $sql = "UPDATE u_cliseb SET clav_ucs='$clav_ucs' WHERE codi_ucs='$codi_ucs'";
+        mysqli_query($link, $sql);
+    }
+
+    mysqli_close($link);
+    echo "<body onload='javascript:cargar()'>";
 }
 else{
   echo "<body>";
@@ -34,7 +46,7 @@ else{
   echo "<tr><td class='Td0' align='center'>Reporte de errores!</td></tr>";
   echo "</table>";
   echo "<br><br><br><br>";
-  echo "<center>La identificación pertenece a otro Usuario</center>";
+  echo "<center>La identificaciï¿½n pertenece a otro Usuario</center>";
   echo "<br>";
   echo "<table class='Tb0' width='70%'>";
   echo "<tr>";

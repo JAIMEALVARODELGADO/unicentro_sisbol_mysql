@@ -36,31 +36,34 @@ $link=conectarbd();
   <th class='Th0' width='10%'>Seleccionar</th>
   <th class='Th0' width='80%'>Opcion</th>
   <?php
-  $consulta="SELECT m.codi_men,m.desc_men,um.codi_umc 
-  FROM sisbol.menu as m 
-  LEFT JOIN sisbol.um_cliseb as um ON um.codi_men=m.codi_men and um.codi_ucs='$codi_ucs'
-  WHERE m.depe_men='$_SESSION[gcodi_gru]' ORDER BY m.codi_men";
+  $codi_ucs = mysqli_real_escape_string($link, $codi_ucs);
+  $gcodi_gru = mysqli_real_escape_string($link, $_SESSION['gcodi_gru']);
   
-  $consulta=pg_query($link,$consulta);
-  while($row=pg_fetch_array($consulta)){
-	echo "<tr>";
-	echo "<td class='Td2' align='center'>";
-	if($row['codi_umc']==Null){
-	  echo "<input type='checkbox' name='chkopc' onclick='permiso(1,$row[codi_men],$codi_ucs)'>";
-	}
-	else{
-	  echo "<input type='checkbox' name='chkopc' checked onclick='permiso(2,$row[codi_men],$codi_ucs)'>";
-	}
-	echo "</td>";
-	echo "<td class='Td2'>$row[desc_men]</td>";
-	echo "</tr>";
+  $consulta = "SELECT m.codi_men, m.desc_men, um.codi_umc 
+               FROM menu AS m 
+               LEFT JOIN um_cliseb AS um ON um.codi_men = m.codi_men AND um.codi_ucs = '$codi_ucs'
+               WHERE m.depe_men = '$gcodi_gru' ORDER BY m.codi_men";
+  
+  $consulta = mysqli_query($link, $consulta);
+  
+  while ($row = mysqli_fetch_array($consulta)) {
+      echo "<tr>";
+      echo "<td class='Td2' align='center'>";
+      if ($row['codi_umc'] == NULL) {
+          echo "<input type='checkbox' name='chkopc' onclick='permiso(1,{$row['codi_men']},$codi_ucs)'>";
+      } else {
+          echo "<input type='checkbox' name='chkopc' checked onclick='permiso(2,{$row['codi_men']},$codi_ucs)'>";
+      }
+      echo "</td>";
+      echo "<td class='Td2'>{$row['desc_men']}</td>";
+      echo "</tr>";
   }
   ?>
-</table>
-</form>
-<?php
-pg_free_result($consulta);
-pg_close($link);
+  </table>
+  </form>
+  <?php
+  mysqli_free_result($consulta);
+  mysqli_close($link);
 ?>
 </body>
 </HTML>

@@ -16,25 +16,30 @@ window.close();
 include("funciones.php");
 $link=conectarbd();
 $sql="SELECT desc_tip FROM tipo WHERE desc_tip='$_POST[desc_tip]'";
-$consulta=pg_query($link,$sql);
-if(pg_num_rows($consulta)==0){
-  $consulta="SELECT max(codi_tip) AS codi_tip FROM sisbol.tipo WHERE codi_gru='".$_SESSION['gcodi_gru']."'";
-  //ECHO "<br>".$consulta;
-  $consulta=pg_query($link,$consulta);
-  $row=pg_fetch_array($consulta);
-  if(empty($row['codi_tip'])){
-     $codi_tip=$_SESSION['gcodi_gru'].'001';}
-  else{
-    $codi_tip=substr($row['codi_tip'],2,3)+1;
-	  $codi_tip=STR_PAD($row['codi_tip']+1,5,'0',STR_PAD_LEFT);
-	  //echo $codi_tip;
-  }
-  $sql="INSERT INTO sisbol.tipo (codi_tip,codi_gru,desc_tip,valo_tip,fijo_tip) VALUES ('$codi_tip','$_SESSION[gcodi_gru]','$_POST[desc_tip]','$_POST[valo_tip]','N')";
-    //ECHO "<br>".$sql;
-    pg_query($link,$sql);
-  }
-  pg_free_result($consulta);
-  pg_close($link);
+$gcodi_gru = mysqli_real_escape_string($link, $_SESSION['gcodi_gru']);
+$desc_tip  = mysqli_real_escape_string($link, $_POST['desc_tip']);
+$valo_tip  = mysqli_real_escape_string($link, $_POST['valo_tip']);
+
+$consulta = mysqli_query($link, $sql);
+
+if (mysqli_num_rows($consulta) == 0) {
+    $consulta = "SELECT MAX(codi_tip) AS codi_tip FROM tipo WHERE codi_gru='$gcodi_gru'";
+    $consulta = mysqli_query($link, $consulta);
+    $row      = mysqli_fetch_array($consulta);
+
+    if (empty($row['codi_tip'])) {
+        $codi_tip = $gcodi_gru . '001';
+    } else {
+        $codi_tip = str_pad($row['codi_tip'] + 1, 5, '0', STR_PAD_LEFT);
+    }
+
+    $sql = "INSERT INTO tipo (codi_tip, codi_gru, desc_tip, valo_tip, fijo_tip) 
+            VALUES ('$codi_tip', '$gcodi_gru', '$desc_tip', '$valo_tip', 'N')";
+    mysqli_query($link, $sql);
+}
+
+mysqli_free_result($consulta);
+mysqli_close($link);
 ?>
 
 </head>

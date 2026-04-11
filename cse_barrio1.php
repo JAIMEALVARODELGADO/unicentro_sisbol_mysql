@@ -58,33 +58,33 @@ $link=conectarbd();
     $condicion=" WHERE ".$condicion;
   }
   //echo "<br>condicion: ".$condicion;
-  $consulta="SELECT id_barrio,comuna_bar,nombre_bar FROM sisbol.barrio ".$condicion."ORDER BY nombre_bar";
-  //echo $consulta;
-  $consulta=pg_query($link,$consulta);
-  while($row=pg_fetch_array($consulta)){
-  	echo "<tr>";
-  	echo "<td class='Td2'><a href='cse_barrio12.php?id_barrio=$row[id_barrio]'><img src='img/32px-Crystal_Clear_device_tablet.png' border=0 height='20' width='20' title='Editar'></a></td>";
-  	echo "<td class='Td2'></td>";
-  	echo "<td class='Td2'><a href='#' onclick='borrar(\"$row[id_barrio]\",\"$row[nombre_bar]\")'><img src='img/32px-Crystal_Clear_action_tab_remove.png' border=0 height='20' width='20' title='Borrar'></a></td>";
-  	echo "<td class='Td2'>$row[comuna_bar]</td>";
-    echo "<td class='Td2'>$row[nombre_bar]</td>";
-  	echo "</tr>";
-  }
-  ?>  
+  $consulta = "SELECT id_barrio, comuna_bar, nombre_bar FROM barrio " . $condicion . "ORDER BY nombre_bar";
+$consulta = mysqli_query($link, $consulta);
+
+while ($row = mysqli_fetch_array($consulta)) {
+    echo "<tr>";
+    echo "<td class='Td2'><a href='cse_barrio12.php?id_barrio={$row['id_barrio']}'><img src='img/32px-Crystal_Clear_device_tablet.png' border=0 height='20' width='20' title='Editar'></a></td>";
+    echo "<td class='Td2'></td>";
+    echo "<td class='Td2'><a href='#' onclick='borrar(\"{$row['id_barrio']}\",\"{$row['nombre_bar']}\")'><img src='img/32px-Crystal_Clear_action_tab_remove.png' border=0 height='20' width='20' title='Borrar'></a></td>";
+    echo "<td class='Td2'>{$row['comuna_bar']}</td>";
+    echo "<td class='Td2'>{$row['nombre_bar']}</td>";
+    echo "</tr>";
+}
+?>
 </table>
 <br>
 <table class='Tbl0'>
-  <tr>
-  <td class='Td2' width='25%' align='right'><a href='cse_barrio11.php'><img src='img/32px-Crystal_Clear_mimetype_document2.png' border=0 height='20' width='20' alt='Regresar'></a></td>
-  <td class='Td2' width='25%' align='left'><a href='cse_barrio11.php'>Nuevo</a></td>
-  <td class='Td2' width='25%' align='right'><a href='#' onclick='atras()'><img src='img/32px-Crystal_Clear_action_1leftarrow.png' border=0 height='20' width='20' alt='Regresar'></a></td>
-  <td class='Td2' width='25%' align='left'><a href='#' onclick='atras()'>Regresar</a></td>
-  </tr>
+    <tr>
+        <td class='Td2' width='25%' align='right'><a href='cse_barrio11.php'><img src='img/32px-Crystal_Clear_mimetype_document2.png' border=0 height='20' width='20' alt='Regresar'></a></td>
+        <td class='Td2' width='25%' align='left'><a href='cse_barrio11.php'>Nuevo</a></td>
+        <td class='Td2' width='25%' align='right'><a href='#' onclick='atras()'><img src='img/32px-Crystal_Clear_action_1leftarrow.png' border=0 height='20' width='20' alt='Regresar'></a></td>
+        <td class='Td2' width='25%' align='left'><a href='#' onclick='atras()'>Regresar</a></td>
+    </tr>
 </table>
 
 </form>
 <?php
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

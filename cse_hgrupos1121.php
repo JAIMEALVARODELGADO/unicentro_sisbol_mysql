@@ -13,9 +13,17 @@ function cargar() {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="UPDATE sisbol.tipo SET desc_tip='$_POST[desc_tip]',valo_tip='$_POST[valo_tip]' WHERE codi_tip='$_POST[codi_tip]'";
-pg_query($link,$sql);
-pg_close($link);
+$desc_tip = mysqli_real_escape_string($link, $_POST['desc_tip']);
+$valo_tip = mysqli_real_escape_string($link, $_POST['valo_tip']);
+$codi_tip = mysqli_real_escape_string($link, $_POST['codi_tip']);
+
+$sql = "UPDATE tipo SET 
+        desc_tip = '$desc_tip',
+        valo_tip = '$valo_tip'
+        WHERE codi_tip = '$codi_tip'";
+
+mysqli_query($link, $sql);
+mysqli_close($link);
 ?>
 
 </head>

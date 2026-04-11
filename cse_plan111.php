@@ -11,9 +11,12 @@ function cargar() {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="INSERT INTO sisbol.premio(codi_ppm,desc_pre) VALUES (1,'$_POST[desc_pre]')";
-pg_query($link,$sql);
-pg_close($link);
+$desc_pre = mysqli_real_escape_string($link, $_POST['desc_pre']);
+
+$sql = "INSERT INTO premio ( desc_pr) VALUES ( '$desc_pre')";
+
+mysqli_query($link, $sql);
+mysqli_close($link);
 ?>
 <script language='javascript'>
   alert("registro"+<?echo pg_affected_rows();?>);

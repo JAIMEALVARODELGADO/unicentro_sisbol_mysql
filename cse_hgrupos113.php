@@ -13,9 +13,12 @@ window.close();
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="DELETE FROM sisbol.tipo WHERE codi_tip='$_GET[codi_tip]'";
-pg_query($link,$sql);
-pg_close($link);
+$codi_tip = mysqli_real_escape_string($link, $_GET['codi_tip']);
+
+$sql = "DELETE FROM tipo WHERE codi_tip='$codi_tip'";
+
+mysqli_query($link, $sql);
+mysqli_close($link);
 ?>
 
 </head>

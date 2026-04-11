@@ -4,33 +4,29 @@ require('fpdf.php');
 
 include("funciones.php");
 $link=conectarbd();
-$consultaemp="SELECT nomb_ent,nit_ent FROM sisbol.entidad";
-$consultaemp=pg_query($link,$consultaemp);
-$rowent=pg_fetch_array($consultaemp);
+$consultaemp="SELECT nomb_ent,nit_ent FROM entidad";
+$consultaemp=mysqli_query($link,$consultaemp);
+$rowent=mysqli_fetch_array($consultaemp);
 
-
-/*$consultaplan="SELECT codi_ppm,fsor_ppm,nota_ppm FROM plan_premio";
-$consultaplan=pg_query($link,$consultaplan);
-$rowplan=pg_fetch_array($consultaplan);*/
 
 
 $consultacom="SELECT com.ndoc_com,com.fech_com,com.valo_com,tip.desc_tip
-    FROM sisbol.compra AS com
-    INNER JOIN sisbol.tipo AS tip ON tip.codi_tip=loca_com
+    FROM compra AS com
+    INNER JOIN tipo AS tip ON tip.codi_tip=loca_com
     WHERE com.codi_bol='".$_GET['codi_bol']."'";
 //echo "<br>".$consultacom;
 
-$consultacom=pg_query($link,$consultacom);
+$consultacom=mysqli_query($link,$consultacom);
 $consulta="SELECT codi_bol,id_camp,nume_dbo,tpid_cli,nrod_cli,exped_cli,nombre,tele_cli,direccion,emai_cli,tipo_ident,nombre_camp,mecanica_camp,fechafin_camp
-FROM sisbol.vw_boleta
+FROM vw_boleta
 WHERE codi_bol='".$_GET['codi_bol']."'";
 //echo "<br>".$consulta;
-$consulta=pg_query($link,$consulta);
+$consulta=mysqli_query($link,$consulta);
 
 $pdf=new FPDF('P','mm','p1');
 //$pdf->AddPage();
 //$pdf->SetFont('Arial','',8);
-while($row=pg_fetch_array($consulta)){
+while($row=mysqli_fetch_array($consulta)){
     $pdf->AddPage();
     $pdf->SetFont('Arial','',8);
     $pdf->Image('img/logo23.PNG',25,2,25,10,'','');
@@ -111,8 +107,8 @@ while($row=pg_fetch_array($consulta)){
     $pdf->Cell(16,3,"Valor",1,0,'R');
     $total=0;
     //mysql_data_seek($consultacom,0);
-    pg_result_seek($consultacom,0);
-    while($rowcom=pg_fetch_array($consultacom)){
+    mysqli_data_seek($consultacom,0);
+    while($rowcom=mysqli_fetch_array($consultacom)){
         $f=$f+3;
         $pdf->SetXY(2,$f);
         $pdf->Cell(8,3,$rowcom['ndoc_com'],0,0,'L');
@@ -139,15 +135,15 @@ while($row=pg_fetch_array($consulta)){
     $pdf->SetXY(0,$f);
     $pdf->Cell(68,2,"°",0,0,'L');
 }
-$sql="UPDATE sisbol.boleta SET impr_bol='S' WHERE codi_bol='".$_GET['codi_bol']."'";
+$sql="UPDATE boleta SET impr_bol='S' WHERE codi_bol='".$_GET['codi_bol']."'";
 //echo $sql;
-pg_query($link,$sql);
-pg_free_result($consultaemp);
-//pg_free_result($consultaplan);
-pg_free_result($consultacom);
-pg_free_result($consulta);
+mysqli_query($link,$sql);
+mysqli_free_result($consultaemp);
+//mysqli_free_result($consultaplan);
+mysqli_free_result($consultacom);
+mysqli_free_result($consulta);
 //mysql_free_result($consultado);
-pg_close($link);
+mysqli_close($link);
 $pdf->Output();
 ?> 
 

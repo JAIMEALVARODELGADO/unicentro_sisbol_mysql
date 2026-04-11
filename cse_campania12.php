@@ -32,22 +32,23 @@ function atras(){
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$consulta="SELECT id_camp,nombre_camp,mecanica_camp,fechafin_camp,actividad_camp,numpersonas_camp,valor_camp,numeroboleta_camp,estado_camp
-  FROM sisbol.campania
-  WHERE id_camp='$_GET[id_camp]'";
-//echo $consulta;
-$consulta=pg_query($link,$consulta);
-$row=pg_fetch_array($consulta);
+$id_camp = mysqli_real_escape_string($link, $_GET['id_camp']);
 
-$id_camp=$_GET['id_camp'];
-$nombre_camp=$row['nombre_camp'];
-$mecanica_camp=$row['mecanica_camp'];
-$fechafin_camp=$row['fechafin_camp'];
-$actividad_camp=$row['actividad_camp'];
-$numpersonas_camp=$row['numpersonas_camp'];
-$valor_camp=$row['valor_camp'];
-$numeroboleta_camp=$row['numeroboleta_camp'];
-$estado_camp=$row['estado_camp'];
+$consulta = "SELECT id_camp, nombre_camp, mecanica_camp, fechafin_camp, actividad_camp, numpersonas_camp, valor_camp, numeroboleta_camp, estado_camp
+             FROM campania
+             WHERE id_camp='$id_camp'";
+
+$consulta = mysqli_query($link, $consulta);
+$row      = mysqli_fetch_array($consulta);
+
+$nombre_camp      = $row['nombre_camp'];
+$mecanica_camp    = $row['mecanica_camp'];
+$fechafin_camp    = $row['fechafin_camp'];
+$actividad_camp   = $row['actividad_camp'];
+$numpersonas_camp = $row['numpersonas_camp'];
+$valor_camp       = $row['valor_camp'];
+$numeroboleta_camp = $row['numeroboleta_camp'];
+$estado_camp      = $row['estado_camp'];
 
 ?>
 </head>
@@ -119,8 +120,7 @@ $estado_camp=$row['estado_camp'];
 
 </form>
 <?php
-pg_free_result($consulta);
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

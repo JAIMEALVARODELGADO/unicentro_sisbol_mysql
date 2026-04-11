@@ -12,15 +12,17 @@ function cargar() {
 include("funciones.php");
 $link=conectarbd();
 
-$consulta="SELECT id_barrio FROM sisbol.cliente WHERE id_barrio='$_GET[id_barrio]'";
-//echo $consulta;
-$consulta=pg_query($link,$consulta);
-if(pg_num_rows($consulta)==0){
-	$sql="DELETE FROM sisbol.barrio WHERE id_barrio='$_GET[id_barrio]'";
-	//echo $sql;
-	pg_query($link,$sql);	
+$id_barrio = mysqli_real_escape_string($link, $_GET['id_barrio']);
+
+$consulta = "SELECT id_barrio FROM cliente WHERE id_barrio='$id_barrio'";
+$consulta = mysqli_query($link, $consulta);
+
+if (mysqli_num_rows($consulta) == 0) {
+    $sql = "DELETE FROM barrio WHERE id_barrio='$id_barrio'";
+    mysqli_query($link, $sql);
 }
-pg_close($link);
+
+mysqli_close($link);
 ?>
 
 </head>

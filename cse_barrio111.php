@@ -11,10 +11,13 @@ function cargar() {
 //Aqui cargo las funciones 
 include("funciones.php");
 $link=conectarbd();
-$sql="INSERT INTO sisbol.barrio(comuna_bar,nombre_bar) VALUES ('$_POST[comuna_bar]','$_POST[nombre_bar]')";
-//echo $sql;
-pg_query($link,$sql);
-pg_close($link);
+$comuna_bar = mysqli_real_escape_string($link, $_POST['comuna_bar']);
+$nombre_bar = mysqli_real_escape_string($link, $_POST['nombre_bar']);
+
+$sql = "INSERT INTO barrio (comuna_bar, nombre_bar) VALUES ('$comuna_bar', '$nombre_bar')";
+
+mysqli_query($link, $sql);
+mysqli_close($link);
 ?>
 <script language='javascript'>
   alert("registro"+<?echo mysql_affected_rows();?>);

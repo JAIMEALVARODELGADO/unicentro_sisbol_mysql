@@ -36,10 +36,11 @@ $link=conectarbd();
 	<td class='Td2' width='30%' align='left'><select name='codi_ucs'>
 	  <option value=''>
 	  <?php
-	    $consultaus="SELECT codi_ucs,nomb_ucs FROM sisbol.u_cliseb WHERE esta_ucs='A' ORDER BY nomb_ucs";
-	    $consultaus=pg_query($link,$consultaus);
-        while($rowus=pg_fetch_array($consultaus)){
-		  echo "<option value=$rowus[codi_ucs]>$rowus[nomb_ucs]";
+	    $consultaus = "SELECT codi_ucs, nomb_ucs FROM u_cliseb WHERE esta_ucs='A' ORDER BY nomb_ucs";
+		$consultaus = mysqli_query($link, $consultaus);
+		
+		while ($rowus = mysqli_fetch_array($consultaus)) {
+			echo "<option value='{$rowus['codi_ucs']}'>{$rowus['nomb_ucs']}</option>";
 		}
 	  ?>
 	  </select>
@@ -48,10 +49,11 @@ $link=conectarbd();
 	<td class='Td2' width='30%' align='left'><select name='codi_gru'>
 	  <option value=''>
 	  <?php
-	    $consultame="SELECT codi_men,desc_men FROM sisbol.menu WHERE nive_men='1'";
-	    $consultame=pg_query($link,$consultame);
-        while($rowme=pg_fetch_array($consultame)){
-		  echo "<option value=$rowme[codi_men]>$rowme[desc_men]";
+	    $consultame = "SELECT codi_men, desc_men FROM menu WHERE nive_men='1'";
+		$consultame = mysqli_query($link, $consultame);
+		
+		while ($rowme = mysqli_fetch_array($consultame)) {
+			echo "<option value='{$rowme['codi_men']}'>{$rowme['desc_men']}</option>";
 		}
 	  ?>
 	  </select>	  
@@ -60,8 +62,8 @@ $link=conectarbd();
   </tr>
 </table>
 <?
-mysql_free_result($consultaus);
-mysql_close();
+mysqli_free_result($consultaus);
+mysqli_close();
 ?>
 </form>
 </body>

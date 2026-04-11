@@ -32,10 +32,12 @@ $link=conectarbd();
 </table>
 <br>
 <?php
-$consulta="SELECT id_barrio,comuna_bar,nombre_bar FROM sisbol.barrio WHERE id_barrio='$_GET[id_barrio]'";
-//echo $consulta;
-$consulta=pg_query($link,$consulta);
-$row=pg_fetch_array($consulta);
+$id_barrio = mysqli_real_escape_string($link, $_GET['id_barrio']);
+
+$consulta = "SELECT id_barrio, comuna_bar, nombre_bar FROM barrio WHERE id_barrio='$id_barrio'";
+
+$consulta = mysqli_query($link, $consulta);
+$row      = mysqli_fetch_array($consulta);
 ?>
 <table class='Tb0' width='100%' border='0'>
   <th class='Th0' width='10%' colspan="3"></th>
@@ -62,8 +64,8 @@ $row=pg_fetch_array($consulta);
 
 </form>
 <?php
-pg_free_result($consulta);
-pg_close($link);
+mysqli_free_result($consulta);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

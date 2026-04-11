@@ -32,7 +32,7 @@ function atras()
 <?php
 //Aqui cargo las funciones 
 include("funciones.php");
-$link=conectarbd();
+//$link=conectarbd();
 ?>
 
 </head>
@@ -91,7 +91,7 @@ $link=conectarbd();
 
 </form>
 <?php
-pg_close($link);
+//pg_close($link);
 ?>
 </body>
 </HTML>

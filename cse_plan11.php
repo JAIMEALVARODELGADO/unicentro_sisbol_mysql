@@ -12,7 +12,7 @@ function validar()
 {
 var error = "Por favor, para continuar,\ncomplete los siguientes campos:\n\n";
 var a = ""
-    if (document.form1.desc_pre.value == "") { a += " Descripción\n";}
+    if (document.form1.desc_pre.value == "") { a += " Descripciï¿½n\n";}
     if (a != "") 
     { alert(error + a);return true;}
     document.form1.submit()
@@ -21,7 +21,7 @@ var a = ""
 <?php
 //Aqui cargo las funciones 
 include("funciones.php");
-$link=conectarbd();
+//$link=conectarbd();
 ?>
 </head>
 <body>
@@ -34,7 +34,7 @@ $link=conectarbd();
   <th class='Th0' width='5%'</th>
   <th class='Th0' width='10%'></th>
   <th class='Th0' width='10%'></th>
-  <th class='Th0' width='75%'>Descripción</th>
+  <th class='Th0' width='75%'>Descripciï¿½n</th>
   <tr>
     <td class='Td2'></td>
 	<td class='Td2'></td>
@@ -54,7 +54,7 @@ $link=conectarbd();
 
 </form>
 <?php
-pg_close($link);
+//pg_close($link);
 ?>
 </body>
 </HTML>

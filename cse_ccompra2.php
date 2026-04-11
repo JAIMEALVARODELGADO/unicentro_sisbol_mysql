@@ -33,7 +33,7 @@ function validar(){
     if (document.form1.tele_cli.value == "") { a += " Teléfono\n"; }
     if (a != ""){
       alert(error + a);return true;}
-    //alert();
+    
     document.form1.submit()
 }
 function atras()
@@ -124,43 +124,49 @@ if(isset($_POST['prof_cli'])){$prof_cli=$_POST['prof_cli'];}
 if(isset($_POST['punt_cli'])){$punt_cli=$_POST['punt_cli'];}
 if(isset($_POST['id_barrio'])){$punt_cli=$_POST['id_barrio'];}
 
-if(!empty($_POST['nrod_cli'])||!empty($_POST['codi_cli'])){
-  if(!empty($_POST['codi_cli'])){
-      $consultacli="select codi_cli,tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,prof_cli,punt_cli,id_barrio
-                              from sisbol.cliente where codi_cli='$_POST[codi_cli]'"; 
-  }
-  else{
-      $consultacli="select codi_cli,tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,prof_cli,punt_cli,id_barrio
-                              from sisbol.cliente where tpid_cli='$_POST[tpid_cli]' and nrod_cli='$_POST[nrod_cli]'";
+if (!empty($_POST['nrod_cli']) || !empty($_POST['codi_cli'])) {
+  $codi_cli_esc = mysqli_real_escape_string($link, $_POST['codi_cli']);
+  $tpid_cli_esc = mysqli_real_escape_string($link, $_POST['tpid_cli']);
+  $nrod_cli_esc = mysqli_real_escape_string($link, $_POST['nrod_cli']);
+
+  if (!empty($_POST['codi_cli'])) {
+      $consultacli = "SELECT codi_cli, tpid_cli, nrod_cli, exped_cli, nomb_cli, apel_cli, dire_cli, tele_cli, fnac_cli, sexo_cli, emai_cli, prof_cli, punt_cli, id_barrio
+                      FROM cliente WHERE codi_cli='$codi_cli_esc'";
+  } else {
+      $consultacli = "SELECT codi_cli, tpid_cli, nrod_cli, exped_cli, nomb_cli, apel_cli, dire_cli, tele_cli, fnac_cli, sexo_cli, emai_cli, prof_cli, punt_cli, id_barrio
+                      FROM cliente WHERE tpid_cli='$tpid_cli_esc' AND nrod_cli='$nrod_cli_esc'";
   }
   //echo $consultacli;
-  $consultacli=pg_query($link,$consultacli);
-  if(pg_num_rows($consultacli)<>0){
-      $rowcli=pg_fetch_array($consultacli);
-      $codi_cli=$rowcli['codi_cli'];
-    	$tpid_cli=$rowcli['tpid_cli'];
-    	$nrod_cli=$rowcli['nrod_cli'];
-      $exped_cli=$rowcli['exped_cli'];
-    	$nomb_cli=$rowcli['nomb_cli'];
-    	$apel_cli=$rowcli['apel_cli'];
-    	$dire_cli=$rowcli['dire_cli'];
-    	$tele_cli=$rowcli['tele_cli'];
-    	$fnac_cli=cambiafechadmy($rowcli['fnac_cli']);
-    	$sexo_cli=$rowcli['sexo_cli'];
-    	$emai_cli=$rowcli['emai_cli'];
-    	$prof_cli=$rowcli['prof_cli'];
-    	$punt_cli=$rowcli['punt_cli'];
-      $id_barrio=$rowcli['id_barrio'];
-    	$disp='disabled';
+  $consultacli = mysqli_query($link, $consultacli);
+
+  if (mysqli_num_rows($consultacli) != 0) {
+      $rowcli    = mysqli_fetch_array($consultacli);
+      $codi_cli  = $rowcli['codi_cli'];
+      $tpid_cli  = $rowcli['tpid_cli'];
+      $nrod_cli  = $rowcli['nrod_cli'];
+      $exped_cli = $rowcli['exped_cli'];
+      $nomb_cli  = $rowcli['nomb_cli'];
+      $apel_cli  = $rowcli['apel_cli'];
+      $dire_cli  = $rowcli['dire_cli'];
+      $tele_cli  = $rowcli['tele_cli'];
+      $fnac_cli  = cambiafechadmy($rowcli['fnac_cli']);
+      $sexo_cli  = $rowcli['sexo_cli'];
+      $emai_cli  = $rowcli['emai_cli'];
+      $prof_cli  = $rowcli['prof_cli'];
+      $punt_cli  = $rowcli['punt_cli'];
+      $id_barrio = $rowcli['id_barrio'];
+      $disp      = 'disabled';
   }
 }
-if(!empty($id_barrio)){
-  $consbarrio="SELECT descripcion FROM sisbol.vw_barrio WHERE id_barrio='$id_barrio'";
-  //echo $consbarrio;
-  $consbarrio=pg_query($link,$consbarrio);
-  if(pg_num_rows($consbarrio)<>0){
-    $rowbar=pg_fetch_array($consbarrio);
-    $barrio=$rowbar['descripcion'];
+
+if (!empty($id_barrio)) {
+  $id_barrio_esc = mysqli_real_escape_string($link, $id_barrio);
+  $consbarrio    = "SELECT descripcion FROM vw_barrio WHERE id_barrio='$id_barrio_esc'";
+  $consbarrio    = mysqli_query($link, $consbarrio);
+
+  if (mysqli_num_rows($consbarrio) != 0) {
+      $rowbar = mysqli_fetch_array($consbarrio);
+      $barrio = $rowbar['descripcion'];
   }
 }
 ?>
@@ -180,11 +186,11 @@ if(!empty($id_barrio)){
     <td class='Td2' width='15%' align='left'><select name='tpid_cli'>
 	<option value=''>
 	<?php
-	  $consultatp="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='01'";
-    $consultatp=pg_query($link,$consultatp);
-	  while($rowtp=pg_fetch_array($consultatp)){
-	    echo "<option value='$rowtp[codi_tip]'>$rowtp[desc_tip]";
-	  }
+	  $consultatp = "SELECT codi_tip, desc_tip FROM tipo WHERE codi_gru='01'";
+    $consultatp = mysqli_query($link, $consultatp);
+    while ($rowtp = mysqli_fetch_array($consultatp)) {
+        echo "<option value='{$rowtp['codi_tip']}'>{$rowtp['desc_tip']}</option>";
+    }
 	?>
 	</select>
 	</td>
@@ -230,11 +236,11 @@ if(!empty($id_barrio)){
 	<td class='Td2' align='left'><select name='prof_cli' <?php echo $disp;?>>
 	<option value=''>
 	<?php
-	  $consultapr="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='04'";
-    $consultapr=pg_query($link,$consultapr);
-	  while($rowpr=pg_fetch_array($consultapr)){
-      echo "<option value='$rowpr[codi_tip]'>$rowpr[desc_tip]";
-	  }
+	  $consultapr = "SELECT codi_tip, desc_tip FROM tipo WHERE codi_gru='04'";
+    $consultapr = mysqli_query($link, $consultapr);
+    while ($rowpr = mysqli_fetch_array($consultapr)) {
+        echo "<option value='{$rowpr['codi_tip']}'>{$rowpr['desc_tip']}</option>";
+    }
 	?>
 	</select>
 	</td>

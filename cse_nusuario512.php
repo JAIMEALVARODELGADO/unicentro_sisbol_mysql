@@ -9,7 +9,7 @@ function validar()
 {
 var error = "Por favor, para continuar,\ncomplete los siguientes campos:\n\n";
 var a = ""
-    if (document.form1.iden_ucs.value == "") { a += " Identificación\n"; }
+    if (document.form1.iden_ucs.value == "") { a += " Identificaciï¿½n\n"; }
     if (document.form1.nomb_ucs.value == "") { a += " Nombre\n"; }
     if (document.form1.logi_ucs.value == "") { a += " Login\n"; }
 	if (document.form1.clav_ucs.value == "") { a += " Clave\n"; }
@@ -36,7 +36,7 @@ function atras()
 </table>
 <table class='Tbl0' width='100%' border='0'>
   <tr>
-	<td class='Td2' width='20%' align='right'>Identificación:</td>
+	<td class='Td2' width='20%' align='right'>IdentificaciÃ³n:</td>
 	<td class='Td2' width='30%' align='left'><input type='text' name='iden_ucs' size='20' maxlength='20'></td>
   </tr>
   <tr>

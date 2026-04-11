@@ -28,67 +28,69 @@ function atras()
 <?php
 //Aqui cargo las funciones 
 include("funciones.php");
-$link=conectarbd();
-$consulta="select iden_ucs,nomb_ucs,logi_ucs,clav_ucs,tipo_ucs from sisbol.u_cliseb where codi_ucs='".$_GET['codi_ucs']."'";
-$consulta=pg_query($link,$consulta);
-$row=pg_fetch_array($consulta);
+$link = conectarbd();
+$codi_ucs = mysqli_real_escape_string($link, $_GET['codi_ucs']);
+$consulta = "SELECT iden_ucs, nomb_ucs, logi_ucs, clav_ucs, tipo_ucs FROM u_cliseb WHERE codi_ucs='$codi_ucs'";
+$consulta = mysqli_query($link, $consulta);
+$row      = mysqli_fetch_array($consulta);
 ?>
 </head>
 <body>
 <form name='form1' method='post' action='cse_eusuario5111.php'>
 <table class='Tbl0' width='100%'>
-  <tr><td class='Td0' align='center'>Editar Usuario del Sistema</td></tr>
+    <tr><td class='Td0' align='center'>Editar Usuario del Sistema</td></tr>
 </table>
 <br>
 <table class='Tbl0' width='100%'>
-  <tr><td class='Td1' align='center'>Datos Del Usuario del Sistema</td></tr>
+    <tr><td class='Td1' align='center'>Datos Del Usuario del Sistema</td></tr>
 </table>
 <table class='Tbl0' width='100%' border='0'>
-  <tr>
-	<td class='Td2' width='20%' align='right'>Identificación:</td>
-	<td class='Td2' width='30%' align='left'><input type='text' name='iden_ucs' size='20' maxlength='20' value='<?php echo $row['iden_ucs'];?>'></td>
-  </tr>
-  <tr>
-	<td class='Td2' width='20%' align='right'>Nombre y Apellido:</td>
-    <td class='Td2' width='30%' align='left'><input type='text' name='nomb_ucs' size='50' maxlength='50' value='<?php echo $row['nomb_ucs'];?>'></td>
-  </tr>
-  <tr>
-    <td class='Td2' align='right'>Login:</td>
-    <td class='Td2' align='left'><input type='text' name='logi_ucs' size='40' maxlength='40' value='<?php echo $row['logi_ucs'];?>'></td>
-  </tr>
-  <tr>
-    <td class='Td2' align='right'>Clave:</td>
-    <td class='Td2' align='left'><input type='password' name='clav_ucs' size='20' maxlength='20'></td>
-  </tr>
-  <tr>
-    <td class='Td2' align='right'>Tipo de Usuario:</td>
-	<td class='Td2' align='left'><select name='tipo_ucs'>
-	  <option value='2'>Usuario</option>
-	  <option value='1'>Superusuario</option>
-	  </select>
-	</td>
-  </tr>
+    <tr>
+        <td class='Td2' width='20%' align='right'>Identificación:</td>
+        <td class='Td2' width='30%' align='left'><input type='text' name='iden_ucs' size='20' maxlength='20' value='<?php echo $row['iden_ucs']; ?>'></td>
+    </tr>
+    <tr>
+        <td class='Td2' width='20%' align='right'>Nombre y Apellido:</td>
+        <td class='Td2' width='30%' align='left'><input type='text' name='nomb_ucs' size='50' maxlength='50' value='<?php echo $row['nomb_ucs']; ?>'></td>
+    </tr>
+    <tr>
+        <td class='Td2' align='right'>Login:</td>
+        <td class='Td2' align='left'><input type='text' name='logi_ucs' size='40' maxlength='40' value='<?php echo $row['logi_ucs']; ?>'></td>
+    </tr>
+    <tr>
+        <td class='Td2' align='right'>Clave:</td>
+        <td class='Td2' align='left'><input type='password' name='clav_ucs' size='20' maxlength='20'></td>
+    </tr>
+    <tr>
+        <td class='Td2' align='right'>Tipo de Usuario:</td>
+        <td class='Td2' align='left'>
+            <select name='tipo_ucs'>
+                <option value='2'>Usuario</option>
+                <option value='1'>Superusuario</option>
+            </select>
+        </td>
+    </tr>
 </table>
 
-<input type='hidden' name='codi_ucs' value='<?php echo $_GET['codi_ucs'];?>'>
+<input type='hidden' name='codi_ucs' value='<?php echo $codi_ucs; ?>'>
 
-<script languaje="javascript">
-  document.form1.tipo_ucs.value="<?php echo $row['tipo_ucs'];?>";
+<script language="javascript">
+    document.form1.tipo_ucs.value = "<?php echo $row['tipo_ucs']; ?>";
 </script>
 <br>
 <table class='Tbl0' width='70%'>
-  <tr>
-  <td class='Td2' width='25%' align='right'><a href='#' onclick='validar()'><img src='img/32px-Crystal_Clear_device_zip_unmount.png' border=0 height='20' width='20' alt='Nuevo'></a></td>
-  <td class='Td2' width='25%' align='left'><a href='#' onclick='validar()'>Guardar</a></td>
-  <td class='Td2' width='25%' align='right'><a href='#' onclick='atras()'><img src='img/32px-Crystal_Clear_action_1leftarrow.png' border=0 height='20' width='20' alt='Regresar'></a></td>
-  <td class='Td2' width='25%' align='left'><a href='#' onclick='atras()'>Regresar</a></td>
-  </tr>
+    <tr>
+        <td class='Td2' width='25%' align='right'><a href='#' onclick='validar()'><img src='img/32px-Crystal_Clear_device_zip_unmount.png' border=0 height='20' width='20' alt='Guardar'></a></td>
+        <td class='Td2' width='25%' align='left'><a href='#' onclick='validar()'>Guardar</a></td>
+        <td class='Td2' width='25%' align='right'><a href='#' onclick='atras()'><img src='img/32px-Crystal_Clear_action_1leftarrow.png' border=0 height='20' width='20' alt='Regresar'></a></td>
+        <td class='Td2' width='25%' align='left'><a href='#' onclick='atras()'>Regresar</a></td>
+    </tr>
 </table>
 
 </form>
 <?php
-pg_free_result($consulta);
-pg_close($link);
+mysqli_free_result($consulta);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

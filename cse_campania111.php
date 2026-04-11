@@ -17,17 +17,23 @@ function regresar(){
 <?php
 //Aqui cargo las funciones 
 include("funciones.php");
-$link=conectarbd();
+$link = conectarbd();
 
-$sql="INSERT INTO sisbol.campania (nombre_camp,mecanica_camp,fechafin_camp,actividad_camp,numpersonas_camp,valor_camp,numeroboleta_camp)
-    VALUES ('$_POST[nombre_camp]','$_POST[mecanica_camp]','$_POST[fechafin_camp]','$_POST[actividad_camp]','$_POST[numpersonas_camp]','$_POST[valor_camp]','1')";
-//echo $sql;
-$res=pg_query($link,$sql);
-$insert_row = pg_fetch_row($res);
-$id_camp = $insert_row[0];
+$nombre_camp      = mysqli_real_escape_string($link, $_POST['nombre_camp']);
+$mecanica_camp    = mysqli_real_escape_string($link, $_POST['mecanica_camp']);
+$fechafin_camp    = mysqli_real_escape_string($link, $_POST['fechafin_camp']);
+$actividad_camp   = mysqli_real_escape_string($link, $_POST['actividad_camp']);
+$numpersonas_camp = mysqli_real_escape_string($link, $_POST['numpersonas_camp']);
+$valor_camp       = mysqli_real_escape_string($link, $_POST['valor_camp']);
+
+$sql = "INSERT INTO campania (nombre_camp, mecanica_camp, fechafin_camp, actividad_camp, numpersonas_camp, valor_camp, numeroboleta_camp)
+        VALUES ('$nombre_camp', '$mecanica_camp', '$fechafin_camp', '$actividad_camp', '$numpersonas_camp', '$valor_camp', '1')";
+
+mysqli_query($link, $sql);
+$id_camp = mysqli_insert_id($link);
 
 echo "<input type='hidden' name='id_camp' value='$id_camp'>";
-pg_close($link);
+mysqli_close($link);
 
 ?>
 
