@@ -1,0 +1,367 @@
+/* ================================================================
+   clientes.css – Estilos del formulario de registro de clientes
+   Unicentro | Bootstrap 5
+================================================================ */
+
+/* ── Variables ── */
+:root {
+    --gold:      #C9A84C;
+    --gold-light:#E8D08A;
+    --dark:      #1A1A2E;
+    --dark-2:    #16213E;
+    --dark-3:    #0F3460;
+    --surface:   #1E2A45;
+    --border:    rgba(201,168,76,0.25);
+    --text:      #E8E8F0;
+    --muted:     #8A93B2;
+    --danger:    #E05C7A;
+    --success:   #4CAF82;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* ── Background pattern ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,168,76,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(15,52,96,.6) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  /* ── Page wrapper ── */
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  
+  /* ── Card ── */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,.06),
+      0 24px 80px rgba(0,0,0,.55),
+      inset 0 1px 0 rgba(255,255,255,.05);
+    width: 100%;
+    max-width: 860px;
+    overflow: hidden;
+    animation: fadeUp .55s cubic-bezier(.22,1,.36,1) both;
+  }
+  
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(28px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  
+  /* ── Header ── */
+  .form-header {
+    background: linear-gradient(135deg, var(--dark-3) 0%, var(--dark-2) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .form-header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%);
+  }
+  
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .brand-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: .6rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35rem;
+    color: var(--dark);
+    box-shadow: 0 4px 16px rgba(201,168,76,.35);
+  }
+  
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+  
+  .brand-sub {
+    font-size: .7rem;
+    color: var(--muted);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+  
+  .form-subtitle {
+    color: var(--muted);
+    font-size: .875rem;
+    margin-top: .35rem;
+    font-weight: 300;
+  }
+  
+  /* ── Form body ── */
+  .form-body {
+    padding: 2rem 2.5rem 2.5rem;
+    background: #ffffff;
+  }
+  
+  /* ── Section labels ── */
+  .section-label {
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #1A5EA8;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid #e3eaf5;
+    margin-bottom: 1.25rem;
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+  
+  /* ── Form controls ── */
+  .form-label {
+    font-size: .8rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: .35rem;
+    letter-spacing: .02em;
+  }
+  
+  .form-control,
+  .form-select {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: .55rem;
+    color: #1e293b;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    padding: .65rem 1rem;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    background: #fff;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+    color: #1e293b;
+    outline: none;
+  }
+  
+  .form-control::placeholder { color: #94a3b8; }
+  
+  .form-select option {
+    background: #fff;
+    color: #1e293b;
+  }
+  
+  /* ── Input group icon ── */
+  .input-group-text {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+    border-right: none;
+    border-radius: .55rem 0 0 .55rem;
+    padding: .65rem .85rem;
+    transition: border-color .2s;
+  }
+  
+  .input-group .form-control,
+  .input-group .form-select {
+    border-left: none;
+    border-radius: 0 .55rem .55rem 0;
+  }
+  
+  .input-group:focus-within .input-group-text {
+    border-color: #2563EB;
+    color: #2563EB;
+  }
+  
+  /* ── Validation ── */
+  .form-control.is-invalid,
+  .form-select.is-invalid {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(224,92,122,.15);
+  }
+  
+  .invalid-feedback { color: var(--danger); font-size: .78rem; }
+  
+  /* ── Button: Guardar ── */
+  .btn-guardar {
+    background: linear-gradient(135deg, #2563EB 0%, #1749B1 100%);
+    border: none;
+    border-radius: .65rem;
+    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding: .8rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .15s, box-shadow .15s, opacity .15s;
+    box-shadow: 0 6px 24px rgba(37,99,235,.4);
+  }
+  
+  .btn-guardar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  
+  .btn-guardar:hover:not(:disabled)::before { opacity: 1; }
+  .btn-guardar:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(37,99,235,.5);
+  }
+  
+  .btn-guardar:active:not(:disabled) { transform: translateY(0); }
+  .btn-guardar:disabled { opacity: .65; cursor: not-allowed; }
+  
+  /* ── Button: Limpiar ── */
+  .btn-limpiar {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: .65rem;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    font-weight: 500;
+    padding: .8rem 2rem;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  
+  .btn-limpiar:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,.05);
+  }
+  
+  /* ── Toast / Alert ── */
+  #toast-area {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    width: 320px;
+  }
+  
+  .toast-msg {
+    border-radius: .75rem;
+    padding: 1rem 1.25rem;
+    font-size: .875rem;
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    animation: slideIn .3s cubic-bezier(.22,1,.36,1) both;
+    border: 1px solid transparent;
+  }
+  
+  @keyframes slideIn {
+    from { opacity:0; transform: translateX(24px); }
+    to   { opacity:1; transform: translateX(0); }
+  }
+  
+  .toast-success {
+    background: #112A1E;
+    border-color: rgba(76,175,130,.3);
+    color: var(--success);
+  }
+  
+  .toast-error {
+    background: #2A1120;
+    border-color: rgba(224,92,122,.3);
+    color: var(--danger);
+  }
+  
+  .toast-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: .05rem; }
+  
+  /* ── Spinner overlay ── */
+  #loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,46,.75);
+    z-index: 8888;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  
+  #loading-overlay.active { display: flex; }
+  
+  .spinner-ring {
+    width: 52px; height: 52px;
+    border: 4px solid rgba(201,168,76,.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin .75s linear infinite;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  /* ── Responsive ── */
+  @media (max-width: 576px) {
+    .form-header { padding: 1.5rem 1.25rem 1.25rem; }
+    .form-body   { padding: 1.25rem 1.25rem 2rem; background: #fff; }
+    .form-title  { font-size: 1.35rem; }
+  }
+  
+  /* ── Char counter ── */
+  .char-counter {
+    font-size: .72rem;
+    color: #94a3b8;
+    float: right;
+    margin-top: .2rem;
+  }
+  .char-counter.warn { color: var(--danger); }
+  
