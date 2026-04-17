@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Clientes – Unicentro</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <!-- Estilos propios -->
+  <link href="css/cliente.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── Overlay de carga ── -->
+<div id="loading-overlay">
+  <div class="spinner-ring"></div>
+</div>
+
+<!-- ── Área de notificaciones ── -->
+<div id="toast-area"></div>
+
+<!-- ── Contenedor principal ── -->
+<div class="page-wrapper">
+  <div class="form-card">
+
+    <!-- Encabezado -->
+    <div class="form-header">
+      <div class="brand-logo">
+        <div class="brand-icon"><i class="bi bi-bag-heart-fill"></i></div>
+        <div>
+          <div class="brand-name">UNICENTRO</div>
+          <div class="brand-sub">Centro Comercial</div>
+        </div>
+      </div>
+      <h1 class="form-title">Registro de Clientes</h1>
+      <p class="form-subtitle">Complete la información para crear un nuevo cliente en el sistema.</p>
+    </div>
+
+    <!-- Cuerpo del formulario -->
+    <div class="form-body">
+      <form id="frmCliente" novalidate>
+
+        <!-- ══ ACCESO ══ -->
+        <div class="section-label"><i class="bi bi-envelope-at"></i> Acceso</div>
+
+        <div class="row g-3">
+          <div class="col-12">
+            <label for="email_cli" class="form-label">Correo electrónico *</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="email_cli" name="email_cli"
+                     maxlength="60" placeholder="cliente@correo.com" required>
+            </div>
+            <div class="invalid-feedback">Ingrese un correo electrónico válido.</div>
+            <span class="char-counter" id="cnt-email">0 / 60</span>
+          </div>
+        </div>
+
+        <!-- Botón enviar -->
+        <div class="row mt-3">
+          <div class="col-12 d-grid">
+            <button class="btn btn-primary" id="btn_enviar" onclick="enviarCorreo()">
+              <i class="bi bi-send"></i> Enviar
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ IDENTIFICACIÓN ══ -->
+        <div class="section-label"><i class="bi bi-person-vcard"></i> Identificación</div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="tpid_cli" class="form-label">Tipo de identificación *</label>
+            <select class="form-select" id="tpid_cli" name="tpid_cli" required>
+              
+            </select>
+            <div class="invalid-feedback">Seleccione el tipo de identificación.</div>
+          </div>
+
+          <div class="col-md-5">
+            <label for="nrod_cli" class="form-label">Número de identificación *</label>
+            <input type="text" class="form-control" id="nrod_cli" name="nrod_cli"
+                   maxlength="20" placeholder="Ej. 1005678901" required>
+            <div class="invalid-feedback">Ingrese el número de identificación.</div>
+            <span class="char-counter" id="cnt-nrod">0 / 20</span>
+          </div>
+
+          <div class="col-md-3">
+            <label for="exped_cli" class="form-label">Expedida en</label>
+            <input type="text" class="form-control" id="exped_cli" name="exped_cli"
+                   maxlength="40" placeholder="Ciudad">
+            <span class="char-counter" id="cnt-exped">0 / 40</span>
+          </div>
+        </div>
+
+        <!-- ══ DATOS PERSONALES ══ -->
+        <div class="section-label"><i class="bi bi-person"></i> Datos personales</div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nomb_cli" class="form-label">Nombres *</label>
+            <input type="text" class="form-control" id="nomb_cli" name="nomb_cli"
+                   maxlength="25" placeholder="Nombres completos" required>
+            <div class="invalid-feedback">Ingrese el nombre del cliente.</div>
+            <span class="char-counter" id="cnt-nomb">0 / 25</span>
+          </div>
+
+          <div class="col-md-6">
+            <label for="ape_cli" class="form-label">Apellidos *</label>
+            <input type="text" class="form-control" id="ape_cli" name="ape_cli"
+                   maxlength="25" placeholder="Apellidos completos" required>
+            <div class="invalid-feedback">Ingrese los apellidos del cliente.</div>
+            <span class="char-counter" id="cnt-ape">0 / 25</span>
+          </div>
+
+          <div class="col-md-4">
+            <label for="sexo_cli" class="form-label">Sexo *</label>
+            <select class="form-select" id="sexo_cli" name="sexo_cli" required>
+              <option value="">Seleccione…</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="O">Otro</option>
+            </select>
+            <div class="invalid-feedback">Seleccione el sexo.</div>
+          </div>
+
+          <div class="col-md-4">
+            <label for="fnac_cli" class="form-label">Fecha de nacimiento *</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+              <input type="date" class="form-control" id="fnac_cli" name="fnac_cli" required>
+            </div>
+            <div class="invalid-feedback">Ingrese la fecha de nacimiento.</div>
+          </div>
+
+          <div class="col-md-4">
+            <label for="tele_cli" class="form-label">Teléfono</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+              <input type="tel" class="form-control" id="tele_cli" name="tele_cli"
+                     maxlength="22" placeholder="+57 300 000 0000">
+            </div>
+            <span class="char-counter" id="cnt-tele">0 / 22</span>
+          </div>
+        </div>
+
+        <!-- ══ UBICACIÓN ══ -->
+        <div class="section-label"><i class="bi bi-geo-alt"></i> Ubicación</div>
+
+        <div class="row g-3">
+          <div class="col-md-7">
+            <label for="dire_cli" class="form-label">Dirección</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-house"></i></span>
+              <input type="text" class="form-control" id="dire_cli" name="dire_cli"
+                     maxlength="50" placeholder="Calle 10 # 25-30">
+            </div>
+            <span class="char-counter" id="cnt-dire">0 / 50</span>
+          </div>
+
+          <div class="col-md-5">
+            <label for="id_barrio" class="form-label">Barrio *</label>
+            <select class="form-select" id="id_barrio" name="id_barrio" required>
+              <option value="">Seleccione barrio…</option>
+              
+            </select>
+            <div class="invalid-feedback">Seleccione el barrio.</div>
+          </div>
+        </div>
+
+        <!-- ══ BOTONES ══ -->
+        <div class="d-flex flex-wrap justify-content-end gap-2 mt-4 pt-3 border-top"
+             style="border-color: #e2e8f0 !important;">
+          <button type="button" class="btn-limpiar" id="btnLimpiar">
+            <i class="bi bi-eraser me-1"></i> Limpiar
+          </button>
+          <button type="submit" class="btn-guardar" id="btnGuardar">
+            <i class="bi bi-floppy me-1"></i> Guardar cliente
+          </button>
+        </div>
+
+      </form>
+    </div><!-- /form-body -->
+  </div><!-- /form-card -->
+</div><!-- /page-wrapper -->
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/cliente.js"></script> 
+
+
+</body>
+</html>
