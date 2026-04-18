@@ -18,6 +18,7 @@ function $id(id) {
 async function cargarTpDocumento() {
     var opcion = 'tipoIdentificacion';
     url="crudCliente.php?opcion=" + opcion;
+    
     try {
         const response = await fetch(url);
 
@@ -114,8 +115,56 @@ async function enviarCorreo() {
 function mostrarMsg(data) {
     if (data.success) {
         alert('Correo enviado exitosamente a ' + data.email);
+        document.getElementById('btn_enviar').style.display = 'none';
+        document.getElementById('email_cli').disabled = true;
+        document.getElementById('validacion-section').classList.remove('d-none');
     } else {
         alert('Error al enviar correo: ' + data.message);
+    }
+}
+
+async function validarCodigo() {
+    email = $id('email_cli').value.trim();
+    codigo = $id('code_val').value.trim();
+
+    const btn = $id('btn_validar');
+    btn.disabled = true;
+    btn.textContent = 'Validando...';
+    const datos = {
+        opcion: 'validarCodigo',
+        email: email,
+        codigo: codigo
+    };
+
+    try {
+        const response = await fetch("crudCliente.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos)
+        });
+
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+        const data = await response.json();
+        mostrarMsgValidacion(data);
+
+    } catch (error) {
+        console.error('Falló la petición:', error);
+        alert('Error de conexión, intente de nuevo.');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar';
+    }
+}
+
+function mostrarMsgValidacion(data) {
+    if (data.success) {
+        alert('Código validado correctamente. Puede continuar con el registro.');
+        document.getElementById('btn_validar').style.display = 'none';
+        document.getElementById('code_val').disabled = true;
+        mostrarCampos();
+    } else {
+        alert('Código inválido: ' + data.message);
     }
 }
 /* ==========================================================
@@ -300,4 +349,35 @@ function setLoading(on) {
 document.addEventListener('DOMContentLoaded', function() {
     cargarTpDocumento();
     cargarBarrios();
+    ocultarCampos();
 });
+
+function ocultarCampos() {
+    document.getElementById('tpid_cli').style.display = 'none';
+    document.getElementById('nrod_cli').style.display = 'none';
+    document.getElementById('exped_cli').style.display = 'none';
+    document.getElementById('nomb_cli').style.display = 'none';
+    document.getElementById('ape_cli').style.display = 'none';
+    document.getElementById('sexo_cli').style.display = 'none';
+    document.getElementById('fnac_cli').style.display = 'none';
+    document.getElementById('tele_cli').style.display = 'none';
+    document.getElementById('dire_cli').style.display = 'none';
+    document.getElementById('id_barrio').style.display = 'none';
+    document.getElementById('btnGuardar').style.display = 'none';
+    document.getElementById('btnLimpiar').style.display = 'none';
+}
+
+function mostrarCampos(){
+    document.getElementById('tpid_cli').style.display = 'block';
+    document.getElementById('nrod_cli').style.display = 'block';
+    document.getElementById('exped_cli').style.display = 'block';
+    document.getElementById('nomb_cli').style.display = 'block';
+    document.getElementById('ape_cli').style.display = 'block';
+    document.getElementById('sexo_cli').style.display = 'block';
+    document.getElementById('fnac_cli').style.display = 'block';
+    document.getElementById('tele_cli').style.display = 'block';
+    document.getElementById('dire_cli').style.display = 'block';
+    document.getElementById('id_barrio').style.display = 'block';
+    document.getElementById('btnGuardar').style.display = 'inline-block';
+    document.getElementById('btnLimpiar').style.display = 'inline-block';
+}

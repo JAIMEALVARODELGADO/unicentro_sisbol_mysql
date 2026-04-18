@@ -33,7 +33,7 @@
       <div class="brand-logo">
         <div class="brand-icon"><i class="bi bi-bag-heart-fill"></i></div>
         <div>
-          <div class="brand-name">UNICENTRO</div>
+          <div class="brand-name">UNICENTRO PASTO</div>
           <div class="brand-sub">Centro Comercial</div>
         </div>
       </div>
@@ -64,8 +64,26 @@
         <!-- Botón enviar -->
         <div class="row mt-3">
           <div class="col-12 d-grid">
-            <button class="btn btn-primary" id="btn_enviar" onclick="enviarCorreo()">
+            <button type="button" class="btn btn-primary" id="btn_enviar" onclick="enviarCorreo()">
               <i class="bi bi-send"></i> Enviar
+            </button>
+          </div>
+        </div>
+
+        <!-- Campo oculto para código de validación -->
+        <div class="row mt-3 d-none" id="validacion-section">
+          <div class="col-12">
+            <label for="code_val" class="form-label">Código de validación *</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-key"></i></span>
+              <input type="text" class="form-control" id="code_val" name="code_val"
+                    maxlength="6" placeholder="Ingrese su código" required>
+            </div>
+            <div class="invalid-feedback">Ingrese el código recibido.</div>
+          </div>
+          <div class="col-12 d-grid mt-2">
+            <button type="button" class="btn btn-success" id="btn_validar" onclick="validarCodigo()">
+              <i class="bi bi-check-circle"></i> Validar
             </button>
           </div>
         </div>
