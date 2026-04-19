@@ -129,8 +129,8 @@
           </div>
 
           <div class="col-md-6">
-            <label for="ape_cli" class="form-label">Apellidos *</label>
-            <input type="text" class="form-control" id="ape_cli" name="ape_cli"
+            <label for="apel_cli" class="form-label">Apellidos *</label>
+            <input type="text" class="form-control" id="apel_cli" name="apel_cli"
                    maxlength="25" placeholder="Apellidos completos" required>
             <div class="invalid-feedback">Ingrese los apellidos del cliente.</div>
             <span class="char-counter" id="cnt-ape">0 / 25</span>
@@ -197,7 +197,7 @@
           <button type="button" class="btn-limpiar" id="btnLimpiar">
             <i class="bi bi-eraser me-1"></i> Limpiar
           </button>
-          <button type="submit" class="btn-guardar" id="btnGuardar">
+          <button type="button" class="btn-guardar" id="btnGuardar" onclick="validarFormulario()">
             <i class="bi bi-floppy me-1"></i> Guardar cliente
           </button>
         </div>

@@ -26,18 +26,12 @@ switch($opcion){
     case 'validarCodigo':
         validarCodigo($email, $codigo);
         break;
-    /*case 'insertar':
-        include('insertarCliente.php');
-        break;
-    case 'eliminar':
-        include('eliminarCliente.php');
+    case 'insertar':
+        insertar($datos);
         break;
     case 'actualizar':
-        include('actualizarCliente.php');
+        actualizarCliente($datos);
         break;
-    case 'consultar':
-        include('consultarCliente.php');
-        break;*/
     default:
         echo "Opción no válida";
 }
@@ -88,21 +82,20 @@ function validarCorreo($email){
     include("funciones.php");
     $link=conectarbd();
 
-    $sql = "SELECT emai_cli FROM cliente WHERE emai_cli = '$email'";
+    $sql = "SELECT * FROM cliente WHERE emai_cli = '$email'";
     $result = mysqli_query($link, $sql);
     
     if (mysqli_num_rows($result) > 0) {
-        echo json_encode([
-            "success" => false,
-            "email"   => $email,
-            "message" => "El correo ya está registrado"
-        ]);
-    } else {
-        enviarCorreo($email);
-    }
+
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    } 
+    
+    enviarCorreo($email,$row);
+   
 }
 
-function enviarCorreo($email) {
+function enviarCorreo($email,$cliente) {
 
     $link=conectarbd();
     //Aqui se valida que el correo de salida esté configurado en la base de datos, si no se encuentra se devuelve un mensaje de error
@@ -143,7 +136,9 @@ function enviarCorreo($email) {
         echo json_encode([
             "success" => true,
             "email"   => $email,
-            "message" => "Correo enviado correctamente"
+            "message" => "Correo enviado correctamente",
+            "codigo"  => $codigo,
+            "cliente"    => $cliente
         ]);
     } else {
         echo json_encode([
@@ -179,5 +174,52 @@ function validarCodigo($email, $codigo) {
             "message" => "Código inválido o expirado"
         ]);
     }
+}
+
+function insertar($datos){
+    include("funciones.php");
+    $link=conectarbd();
+
+    $sql = "INSERT INTO cliente (tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,id_barrio) 
+    VALUES ('".$datos['tpid_cli']."','".$datos['nrod_cli']."','".$datos['exped_cli']."','".$datos['nomb_cli']."','".$datos['apel_cli']."','".$datos['dire_cli']."','".$datos['tele_cli']."','".$datos['fnac_cli']."','".$datos['sexo_cli']."','".$datos['email']."','".$datos['id_barrio']."')";
+    //ECHO $sql;
+
+    if (mysqli_query($link, $sql)) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Cliente insertado correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Error al insertar el cliente: " . mysqli_error($link)
+        ]);
+    }
+
+    $sql="UPDATE validation_codes SET used = 1 WHERE email_val = '".$datos['email']."' AND code_val = '".$datos['codigo']."'";
+    mysqli_query($link, $sql);
+    mysqli_close($link);
+}
+
+function actualizarCliente($datos){
+    include("funciones.php");
+    $link=conectarbd();
+
+    $sql = "UPDATE cliente SET tpid_cli='".$datos['tpid_cli']."',nrod_cli='".$datos['nrod_cli']."',exped_cli='".$datos['exped_cli']."',nomb_cli='".$datos['nomb_cli']."',apel_cli='".$datos['apel_cli']."',dire_cli='".$datos['dire_cli']."',tele_cli='".$datos['tele_cli']."',fnac_cli='".$datos['fnac_cli']."',sexo_cli='".$datos['sexo_cli']."',emai_cli='".$datos['email']."' 
+    WHERE emai_cli = '".$datos['email']."'";
+    //echo $sql;
+    if (mysqli_query($link, $sql)) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Cliente actualizado correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Error al actualizar el cliente: " . mysqli_error($link)
+        ]);
+    }
+
+    mysqli_close($link);
 }
 ?>
