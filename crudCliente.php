@@ -89,7 +89,10 @@ function validarCorreo($email){
 
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-    } 
+    }
+    else{
+        $row = null;
+    }
     
     enviarCorreo($email,$row);
    
@@ -207,7 +210,7 @@ function actualizarCliente($datos){
 
     $sql = "UPDATE cliente SET tpid_cli='".$datos['tpid_cli']."',nrod_cli='".$datos['nrod_cli']."',exped_cli='".$datos['exped_cli']."',nomb_cli='".$datos['nomb_cli']."',apel_cli='".$datos['apel_cli']."',dire_cli='".$datos['dire_cli']."',tele_cli='".$datos['tele_cli']."',fnac_cli='".$datos['fnac_cli']."',sexo_cli='".$datos['sexo_cli']."',emai_cli='".$datos['email']."' 
     WHERE emai_cli = '".$datos['email']."'";
-    //echo $sql;
+    
     if (mysqli_query($link, $sql)) {
         echo json_encode([
             "success" => true,

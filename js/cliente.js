@@ -188,7 +188,7 @@ async function validarCodigo() {
 
 function mostrarMsgValidacion(data) {
     if (data.success) {
-        alert('Código validado correctamente. Puede continuar con el registro.');
+        //alert('Código validado correctamente. Puede continuar con el registro.');
         document.getElementById('btn_validar').style.display = 'none';
         document.getElementById('code_val').disabled = true;
         mostrarCampos();
@@ -300,10 +300,15 @@ async function guardarRegistro() {
 
 function mostrarMsgGuardado(data) {
     if (data.success) {
-        alert('Cliente ' + data.nomb_cli + ' ' + data.apel_cli + ' registrado correctamente.');
+        alert('Cliente registrado correctamente.');
         document.getElementById('btnGuardar').style.display = 'none';
         limpiarFormulario();
         ocultarCampos();
+        document.getElementById('btn_enviar').style.display = 'inline-block';
+        document.getElementById('email_cli').disabled = false;
+        document.getElementById('code_val').disabled = false;
+        document.getElementById('validacion-section').classList.add('d-none');
+        document.getElementById('btn_validar').style.display = 'inline-block';
     } else {
         alert('Registro sin guardar: ' + data.message);
     }
