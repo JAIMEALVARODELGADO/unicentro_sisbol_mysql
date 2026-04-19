@@ -365,3 +365,50 @@
   }
   .char-counter.warn { color: var(--danger); }
   
+  /* Contenedor del logo y texto */
+.brand-logo {
+  display: flex;
+  justify-content: space-between; /* Texto a la izquierda, logo a la derecha */
+  align-items: center;
+  padding: 10px 20px;
+}
+
+/* Texto */
+.brand-text {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Logo */
+.logo-unicentro {
+  height: 70px;
+  border-radius: 12px;          /* Bordes redondeados */
+  background-color: #ffffff;    /* Fondo blanco detrás del logo */
+  padding: 6px;                 /* Espacio interno para que no quede pegado */
+  box-shadow: 0 0 12px rgba(0,0,0,0.2); /* Sombra suave alrededor */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.logo-unicentro:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(0,0,0,0.3);
+}
+
+/*Boton cerrar*/
+.form-subrow {
+  display: flex;
+  justify-content: space-between; /* subtítulo a la izquierda, botón a la derecha */
+  align-items: right;
+  margin-top: 10px;
+}
+
+#btnCerrar {
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+#btnCerrar:hover {
+  background-color: #c82333; /* rojo más intenso */
+}

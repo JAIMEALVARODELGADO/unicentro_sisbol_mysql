@@ -392,111 +392,7 @@ $id('btnLimpiar').addEventListener('click', function() {
   });
 });
 
-/* ==========================================================
- Validacion del lado cliente
-========================================================== */
-/*function validarFormulario() {
-  var form   = $id('frmCliente');
-  var valido = true;
 
-  /* Limpiar errores previos */
-  /*form.querySelectorAll('.is-invalid').forEach(function(el) {
-      el.classList.remove('is-invalid');
-  });
-
-  /* Helper: marcar campo requerido vacio */
-  /*function req(fieldId) {
-      var el = $id(fieldId);
-      if (!el.value.trim()) {
-          el.classList.add('is-invalid');
-          valido = false;
-      }
-  }
-
-  /* Email con formato */
-  /*var emailEl  = $id('email_cli');
-  var emailRgx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailEl.value.trim() || !emailRgx.test(emailEl.value.trim())) {
-      emailEl.classList.add('is-invalid');
-      valido = false;
-  }
-
-  /* Campos obligatorios */
-  /*['tpid_cli', 'nrod_cli', 'nomb_cli', 'apel_cli',
-   'sexo_cli', 'fnac_cli', 'id_barrio'].forEach(req);
-
-  /* Fecha de nacimiento: no puede ser hoy ni futura */
-  /*var fnac = $id('fnac_cli');
-  if (fnac.value) {
-      var hoy = new Date();
-      hoy.setHours(0, 0, 0, 0);
-      if (new Date(fnac.value) >= hoy) {
-          fnac.classList.add('is-invalid');
-          valido = false;
-      }
-  }
-
-  return valido;
-}*/
-
-/* ==========================================================
- Envio AJAX
-========================================================== */
-/*$id('frmCliente').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  if (!validarFormulario()) {
-      showToast('Por favor corrija los campos marcados en rojo.', 'error');
-      var first = this.querySelector('.is-invalid');
-      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-  }
-
-  var data = {
-      email_cli : $id('email_cli').value.trim(),
-      tpid_cli  : $id('tpid_cli').value,
-      nrod_cli  : $id('nrod_cli').value.trim(),
-      exped_cli : $id('exped_cli').value.trim(),
-      nomb_cli  : $id('nomb_cli').value.trim(),
-      apel_cli   : $id('apel_cli').value.trim(),
-      sexo_cli  : $id('sexo_cli').value,
-      fnac_cli  : $id('fnac_cli').value,
-      tele_cli  : $id('tele_cli').value.trim(),
-      dire_cli  : $id('dire_cli').value.trim(),
-      id_barrio : $id('id_barrio').value,
-  };*/
-
-  /*setLoading(true);
-  $id('btnGuardar').disabled = true;
-
-  try {
-      var response = await fetch('guardar_cliente.php', {
-          method  : 'POST',
-          headers : { 'Content-Type': 'application/json' },
-          body    : JSON.stringify(data),
-      });
-
-      var result = await response.json();
-
-      if (result.success) {
-          showToast('Cliente ' + data.nomb_cli + ' ' + data.apel_cli + ' registrado correctamente.', 'success');
-          $id('frmCliente').reset();
-          charFields.forEach(function(field) {
-              $id(field.counter).textContent = '0 / ' + field.max;
-              $id(field.counter).classList.remove('warn');
-          });
-      } else {
-          showToast(result.message || 'No se pudo guardar el cliente. Intente nuevamente.', 'error');
-      }
-
-  } catch (err) {
-      console.error('Error AJAX:', err);
-      showToast('Error de conexion con el servidor. Verifique su red.', 'error');
-  } finally {
-      setLoading(false);
-      $id('btnGuardar').disabled = false;
-  }
-});*/
 
 /* ==========================================================
  Inicializacion al cargar la pagina
@@ -535,4 +431,8 @@ function mostrarCampos(){
     document.getElementById('id_barrio').style.display = 'block';
     document.getElementById('btnGuardar').style.display = 'inline-block';
     document.getElementById('btnLimpiar').style.display = 'inline-block';
+}
+
+function cerrarFormulario() {
+    document.querySelector(".form-card").style.display = "none";
 }
