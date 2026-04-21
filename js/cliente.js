@@ -431,8 +431,27 @@ function mostrarCampos(){
     document.getElementById('id_barrio').style.display = 'block';
     document.getElementById('btnGuardar').style.display = 'inline-block';
     document.getElementById('btnLimpiar').style.display = 'inline-block';
+    document.getElementById('btnGuardar').disabled = true;
 }
 
 function cerrarFormulario() {
-    document.querySelector(".form-card").style.display = "none";
+    window.location.href = "https://www.ccunicentropasto.com/";
 }
+
+// Función para habilitar/deshabilitar el botón Guardar
+document.addEventListener("DOMContentLoaded", function () {
+    const chkDatos = document.getElementById("chkDatos");
+    const btnGuardar = document.getElementById("btnGuardar");
+  
+    // Inicialmente deshabilitado
+    btnGuardar.disabled = true;
+  
+    // Escuchar cambios en el checkbox
+    chkDatos.addEventListener("change", function () {
+      if (chkDatos.checked) {
+        btnGuardar.disabled = false; // habilita
+      } else {
+        btnGuardar.disabled = true;  // deshabilita
+      }
+    });
+  });

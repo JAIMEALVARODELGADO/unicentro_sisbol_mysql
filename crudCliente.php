@@ -41,7 +41,7 @@ function consultarTpId(){
     $link=conectarbd();
 
     $sql = "SELECT codi_tip,codi_gru,desc_tip,valo_tip FROM tipo 
-    WHERE codi_gru = '01'
+    WHERE codi_gru = '01' AND estado='A'
     ORDER BY desc_tip";
     $result = mysqli_query($link, $sql);
     $datos = []; 

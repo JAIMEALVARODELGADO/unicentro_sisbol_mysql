@@ -5,23 +5,17 @@
 
 /* ── Variables ── */
 :root {
-    --gold:      #C9A84C;
-    --gold-light:#E8D08A;
-    --dark:      #1A1A2E;
-    --dark-2:    #16213E;
-    --dark-3:    #0F3460;
-    --surface:   #1E2A45;
-    --border:    rgba(201,168,76,0.25);
-    --text:      #E8E8F0;
-    --muted:     #8A93B2;
-    --danger:    #E05C7A;
-    --success:   #4CAF82;
+  --verde: #00817e;
+  --naranja: #f18032;
+  --turquesa: #39bfc2;
+  --gris-fondo: #f5f5f5;
+  --blanco: #ffffff;
   }
   
   * { box-sizing: border-box; }
   
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: var(--dark);
     color: var(--text);
     min-height: 100vh;
@@ -94,6 +88,7 @@
     align-items: center;
     gap: .75rem;
     margin-bottom: 1rem;
+    justify-content: center;
   }
   
   .brand-icon {
@@ -123,11 +118,17 @@
   }
   
   .form-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--text);
+    display: block;              /* ocupa todo el ancho */
+    width: 100%;                 /* asegura que se extienda al contenedor */
+    text-align: center;          /* centrado */
+    background-color: #39bfc2;   /* fondo turquesa */
+    color: #ffffff;              /* texto blanco */
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    padding: 12px 0;          /* espacio interno para que se vea como recuadro */
+    margin: 0;             /* centra el bloque horizontalmente */
+    border-radius: 8px;          /* opcional: esquinas redondeadas */
+    display: inline-block;       /* para que el fondo se ajuste al texto */
   }
   
   .form-subtitle {
@@ -149,7 +150,7 @@
     font-weight: 600;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #1A5EA8;
+    color: var(--turquesa);
     padding-bottom: .5rem;
     border-bottom: 2px solid #e3eaf5;
     margin-bottom: 1.25rem;
@@ -162,9 +163,9 @@
   
   /* ── Form controls ── */
   .form-label {
-    font-size: .8rem;
-    font-weight: 500;
-    color: #4a5568;
+    font-size: .9rem;
+    font-weight: 600;
+    color: #000000;
     margin-bottom: .35rem;
     letter-spacing: .02em;
   }
@@ -230,10 +231,10 @@
   
   /* ── Button: Guardar ── */
   .btn-guardar {
-    background: linear-gradient(135deg, #2563EB 0%, #1749B1 100%);
+    background-color: var(--turquesa);
+    color: #fff;
     border: none;
     border-radius: .65rem;
-    color: #ffffff;
     font-family: 'DM Sans', sans-serif;
     font-size: .95rem;
     font-weight: 600;
@@ -254,10 +255,8 @@
     transition: opacity .2s;
   }
   
-  .btn-guardar:hover:not(:disabled)::before { opacity: 1; }
-  .btn-guardar:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 32px rgba(37,99,235,.5);
+  .btn-guardar:hover {
+    background-color: #2aa9ad;
   }
   
   .btn-guardar:active:not(:disabled) { transform: translateY(0); }
@@ -380,12 +379,12 @@
 
 /* Logo */
 .logo-unicentro {
-  height: 70px;
-  border-radius: 12px;          /* Bordes redondeados */
-  background-color: #ffffff;    /* Fondo blanco detrás del logo */
-  padding: 6px;                 /* Espacio interno para que no quede pegado */
-  box-shadow: 0 0 12px rgba(0,0,0,0.2); /* Sombra suave alrededor */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 80px;
+  border-radius: 0;          /* Bordes redondeados */
+  background-color: transparent;    /* Fondo blanco detrás del logo */
+  padding: 0;                 /* Espacio interno para que no quede pegado */
+  box-shadow: none;              /* Sin sombra por defecto */
+  height: 80px;
 }
 
 /* Efecto al pasar el mouse */
@@ -411,4 +410,41 @@
 
 #btnCerrar:hover {
   background-color: #c82333; /* rojo más intenso */
+}
+
+.btn-enviar {
+  background-color: var(--naranja); /* color corporativo */
+  color: #fff;
+  border: none;
+  width: 100%;          /* ocupa todo el ancho */
+  display: block;       /* asegura que se extienda */
+  padding: 12px;        /* espacio interno */
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-enviar:hover {
+  background-color: #d96d28;
+}
+
+.btn-validar {
+  background-color: #00817e; /* verde corporativo */
+  color: #ffffff;            /* texto blanco */
+  border: none;
+  width: 100%;               /* opcional: ocupa todo el ancho */
+  display: block;
+  padding: 12px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.btn-validar:hover {
+  background-color: #006b68; /* tono más oscuro al pasar el mouse */
+}
+
+.form-footer button {
+  display: block;
+  width: 100%;      /* cada botón ocupa todo el ancho */
+  margin-bottom: 12px; /* espacio entre botones */
 }
