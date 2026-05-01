@@ -257,6 +257,8 @@ async function guardarRegistro() {
     id_barrio = $id('id_barrio').value;
 
     opcion = (nuevo) ? 'insertar' : 'actualizar';
+    
+    //alert(opcion);
 
     const btn = $id('btnGuardar');
     btn.disabled = true;
@@ -390,6 +392,14 @@ $id('btnLimpiar').addEventListener('click', function() {
       $id(field.counter).textContent = '0 / ' + field.max;
       $id(field.counter).classList.remove('warn');
   });
+  
+    ocultarCampos();
+    document.getElementById('btn_enviar').style.display = 'inline-block';
+    document.getElementById('email_cli').disabled = false;
+    document.getElementById('code_val').disabled = false;
+    document.getElementById('validacion-section').classList.add('d-none');
+    document.getElementById('btn_validar').style.display = 'inline-block';
+  
 });
 
 
@@ -455,3 +465,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+  
+  
+// Conectar el botón Guardar con la validación
+document.addEventListener("DOMContentLoaded", function () {
+    const btnGuardar = document.getElementById("btnGuardar");
+
+    btnGuardar.addEventListener("click", function (event) {
+        event.preventDefault(); // evita que el formulario se envíe por defecto
+        validarFormulario();    // ejecuta la validación y luego guardarRegistro()
+    });
+});

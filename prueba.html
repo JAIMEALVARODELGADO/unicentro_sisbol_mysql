@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lector de archivo</title>
+</head>
+<body>
+  <h3>Seleccionar archivo de texto/CSV</h3>
+  <input type="file" id="archivo" />
+  <button onclick="procesarArchivo()">Procesar</button>
+
+  <script>
+    function procesarArchivo() {
+      const input = document.getElementById("archivo");
+      const file = input.files[0];
+    
+      if (!file) {
+        alert("Selecciona un archivo primero.");
+        return;
+      }
+    
+      const reader = new FileReader();
+    
+      reader.onload = function(e) {
+        const contenido = e.target.result;
+    
+        // Dividir por líneas
+        const lineas = contenido.split(/\r?\n/).filter(l => l.trim() !== "");
+    
+        // Recorrer cada línea y crear objeto
+        const registros = lineas.map((linea, index) => {
+          // Separar por comas respetando comillas
+          //const campos = linea.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+          const campos = linea
+          .split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+            .map(campo => campo.replace(/^"|"$/g, "")); // limpiar comillas
+    
+          // Crear objeto cliente
+          const cliente = {
+            codi_cli: campos[0],
+            tpid_cli: campos[1],
+            nrod_cli: campos[2],
+            exped_cli: campos[3],
+            nomb_cli: campos[4],
+            apel_cli: campos[5],
+            dire_cli: campos[6],
+            tele_cli: campos[7],
+            fnac_cli: campos[8],
+            sexo_cli: campos[9],
+            emai_cli: campos[10],
+            prof_cli: campos[11],
+            punt_cli: campos[12],
+            fuco_cli: campos[13],
+            id_barrio: campos[14],
+            customer_type: campos[15],
+            password: campos[16],
+            id_role: campos[17],
+            pet: campos[18],
+            terms_conditions: campos[19],
+            fecha_creacion: campos[20]
+          };
+    
+          console.log("Cliente:", cliente);
+          enviar(cliente);
+
+          setTimeout(() => {
+            console.log("Han pasado 2 segundos");
+            }, 8); // 2000 ms = 2 segundos
+
+          return cliente;
+        });
+    
+        alert("Se procesaron " + registros.length + " registros. Revisa la consola.");
+      }; // ← aquí cerramos correctamente la función onload
+    
+      reader.readAsText(file);
+    }
+
+    function enviar(cliente){
+        fetch("prueba.php", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cliente)
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error("Error en la solicitud: " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Cliente enviado:", data);
+        })
+        .catch(error => {
+            console.error("Error al enviar cliente:", error);
+        });
+    }
+    </script>
+    
+</body>
+</html>

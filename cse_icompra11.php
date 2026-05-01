@@ -13,9 +13,9 @@ $link=conectarbd();
 <body>
 <form name='form1' method='post' action=''>
 <?php
-$concampani="SELECT nombre_camp FROM sisbol.campania WHERE id_camp='$_POST[id_camp]'";
-$concampani=pg_query($link,$concampani);
-$rowcamp=pg_fetch_array($concampani);
+$concampani="SELECT nombre_camp FROM campania WHERE id_camp='$_POST[id_camp]'";
+$concampani=mysqli_query($link,$concampani);
+$rowcamp=mysqli_fetch_array($concampani);
 $nombre_camp=$rowcamp['nombre_camp'];
 
 $condicion="anul_bol='N' and ";
@@ -47,7 +47,7 @@ $condicion=substr($condicion,0,(strlen($condicion)-5));
            INNER JOIN tipo AS loc ON loc.codi_tip=co.loca_com";*/
 $consulta="SELECT codi_cli,nrod_cli,nombre,CONCAT(dire_cli,' ',nombre_bar) as direccion,tele_cli,sexo_cli,fnac_cli,
            tipo_doc_comp,ndoc_com,fech_com,valo_com,local 
-           FROM sisbol.vw_compra";
+           FROM vw_compra";
 if(!empty($condicion)){
   $consulta=$consulta." WHERE ".$condicion;
 }
@@ -55,8 +55,8 @@ if(empty($orden)){
   $orden='nombre';
 }
 //echo $consulta;
-$consultacom=pg_query($link,$consulta);
-if(pg_num_rows($consultacom)==0){
+$consultacom=mysqli_query($link,$consulta);
+if(mysqli_num_rows($consultacom)==0){
   echo "<table class='Tbl0'>";
   echo "<tr><td class='Td1' align='center'>Compras No Encontradas</td></tr>";
   echo "</table>";
@@ -80,7 +80,7 @@ else{
     <th class='Th0'>Fecha</th>
     <th class='Th0'>Valor</th>    
 	<?php
-	while($rowcom=pg_fetch_array($consultacom)){
+	while($rowcom=mysqli_fetch_array($consultacom)){
 	  echo "<tr>";
 	  echo "<td class='Td2'>$rowcom[nrod_cli]</td>";
 	  echo "<td class='Td2'>$rowcom[nombre]</td>";
@@ -103,7 +103,7 @@ else{
 <input type='hidden' name='codi_cli' value='<?echo $codi_cli?>'>
 </form>
 <?php
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

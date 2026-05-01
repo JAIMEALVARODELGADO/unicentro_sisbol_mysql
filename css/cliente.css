@@ -231,7 +231,7 @@
   
   /* ── Button: Guardar ── */
   .btn-guardar {
-    background-color: var(--turquesa);
+    background-color: #39bfc2;
     color: #fff;
     border: none;
     border-radius: .65rem;
@@ -389,8 +389,8 @@
 
 /* Efecto al pasar el mouse */
 .logo-unicentro:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 18px rgba(0,0,0,0.3);
+  /*transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(0,0,0,0.3);*/
 }
 
 /*Boton cerrar*/
@@ -402,6 +402,7 @@
 }
 
 #btnCerrar {
+  background-color: #f15642;
   border-radius: 8px;
   padding: 6px 12px;
   font-size: 0.9rem;

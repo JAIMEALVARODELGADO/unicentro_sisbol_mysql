@@ -41,7 +41,7 @@ function consultarTpId(){
     $link=conectarbd();
 
     $sql = "SELECT codi_tip,codi_gru,desc_tip,valo_tip FROM tipo 
-    WHERE codi_gru = '01' AND estado='A'
+    WHERE codi_gru = '01' and estado='A'
     ORDER BY desc_tip";
     $result = mysqli_query($link, $sql);
     $datos = []; 
@@ -120,6 +120,7 @@ function enviarCorreo($email,$cliente) {
 
     $sql="INSERT INTO validation_codes (email_val, code_val, expires_at) 
     VALUES ('$email', '$codigo', DATE_ADD(NOW(), INTERVAL 15 MINUTE))";
+    
     if (!mysqli_query($link, $sql)) {
         echo json_encode([
             "success" => false,
@@ -208,7 +209,7 @@ function actualizarCliente($datos){
     include("funciones.php");
     $link=conectarbd();
 
-    $sql = "UPDATE cliente SET tpid_cli='".$datos['tpid_cli']."',nrod_cli='".$datos['nrod_cli']."',exped_cli='".$datos['exped_cli']."',nomb_cli='".$datos['nomb_cli']."',apel_cli='".$datos['apel_cli']."',dire_cli='".$datos['dire_cli']."',tele_cli='".$datos['tele_cli']."',fnac_cli='".$datos['fnac_cli']."',sexo_cli='".$datos['sexo_cli']."',emai_cli='".$datos['email']."' 
+    $sql = "UPDATE cliente SET tpid_cli='".$datos['tpid_cli']."',nrod_cli='".$datos['nrod_cli']."',exped_cli='".$datos['exped_cli']."',nomb_cli='".$datos['nomb_cli']."',apel_cli='".$datos['apel_cli']."',dire_cli='".$datos['dire_cli']."',tele_cli='".$datos['tele_cli']."',fnac_cli='".$datos['fnac_cli']."',sexo_cli='".$datos['sexo_cli']."',emai_cli='".$datos['email']."',id_barrio='".$datos['id_barrio']."' 
     WHERE emai_cli = '".$datos['email']."'";
     
     if (mysqli_query($link, $sql)) {

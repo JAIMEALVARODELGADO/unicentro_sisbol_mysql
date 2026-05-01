@@ -27,7 +27,7 @@ if(!empty($_POST['nomb_cli'])){
 if(!empty($_POST['apel_cli'])){
   $condicion=$condicion."apel_cli like '$_POST[apel_cli]%' and ";}
 $condicion=substr($condicion,0,(strlen($condicion)-5));
-$consulta="SELECT codi_cli,nrod_cli,nomb_cli,apel_cli,dire_cli,tele_cli,emai_cli FROM sisbol.cliente";
+$consulta="SELECT codi_cli,nrod_cli,nomb_cli,apel_cli,dire_cli,tele_cli,emai_cli FROM cliente";
 if(!empty($condicion)){
   $consulta=$consulta." WHERE ".$condicion;
 }
@@ -36,8 +36,8 @@ if(empty($orden)){
 }
 $consulta=$consulta." ORDER BY $orden";
 //echo $consulta;
-$consultacli=pg_query($link,$consulta);
-if(pg_num_rows($consultacli)==0){
+$consultacli=mysqli_query($link,$consulta);
+if(mysqli_num_rows($consultacli)==0){
   echo "<table class='Tbl0'>";
   echo "<tr><td class='Td1' align='center'>Cliente No Encontrados</td></tr>";
   echo "</table>";
@@ -55,7 +55,7 @@ else{
     <th class='Th0' width='15%'>Teléfono</th>
     
 	<?php
-	while($rowcli=pg_fetch_array($consultacli)){
+	while($rowcli=mysqli_fetch_array($consultacli)){
 	  echo "<tr>";
 	  echo "<td class='Td2'>$rowcli[nrod_cli]</td>";
 	  echo "<td class='Td2'>$rowcli[nomb_cli]</td>";
@@ -79,7 +79,7 @@ else{
 <input type='hidden' name='codi_cli' value='<?echo $codi_cli?>'>
 </form>
 <?php
-pg_close($link);
+mysqli_close($link);
 ?>
 </body>
 </HTML>

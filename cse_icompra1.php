@@ -29,9 +29,9 @@ $link=conectarbd();
 	<td class='Td2' width='10%' align='right'>Campaña:</td>
 	<td class='Td2' align='left' colspan="5"><select name='id_camp'>
 	  <?php
-	    $consultacamp="SELECT id_camp,nombre_camp FROM sisbol.campania ORDER BY estado_camp";
-	    $consultacamp=pg_query($link,$consultacamp);
-	    while($rowcamp=pg_fetch_array($consultacamp)){
+	    $consultacamp="SELECT id_camp,nombre_camp FROM campania ORDER BY estado_camp";
+	    $consultacamp=mysqli_query($link,$consultacamp);
+	    while($rowcamp=mysqli_fetch_array($consultacamp)){
 	      echo "<option value='$rowcamp[id_camp]'>".$rowcamp['nombre_camp']."</option>";
 	    }
 	  ?>
@@ -59,9 +59,9 @@ $link=conectarbd();
 	<td class='Td2' width='10%' align='left'><select name='loca_com'>
 	  <option value=''>
 	  <?php
-	    $consultalo="SELECT codi_tip,desc_tip,valo_tip FROM sisbol.tipo WHERE codi_gru='03' ORDER BY valo_tip";
-	    $consultalo=pg_query($link,$consultalo);
-	    while($rowlo=pg_fetch_array($consultalo)){
+	    $consultalo="SELECT codi_tip,desc_tip,valo_tip FROM tipo WHERE codi_gru='03' ORDER BY valo_tip";
+	    $consultalo=mysqli_query($link,$consultalo);
+	    while($rowlo=mysqli_fetch_array($consultalo)){
 	      echo "<option value='$rowlo[codi_tip]'>".$rowlo['valo_tip']." ".substr($rowlo['desc_tip'],0,15)."</option>";
 	    }
 	  ?>
@@ -71,9 +71,9 @@ $link=conectarbd();
     <td class='Td2' width='10%' align='left'><select name='tdoc_com'>
 	<option value=''>
 	<?php
-	  $consultado="SELECT codi_tip,desc_tip FROM sisbol.tipo WHERE codi_gru='02'";
-	  $consultado=pg_query($link,$consultado);
-	  while($rowdo=pg_fetch_array($consultado)){
+	  $consultado="SELECT codi_tip,desc_tip FROM tipo WHERE codi_gru='02'";
+	  $consultado=mysqli_query($link,$consultado);
+	  while($rowdo=mysqli_fetch_array($consultado)){
 	    echo "<option value='$rowdo[codi_tip]'>$rowdo[desc_tip]"."</option>";
 	  }
 	?>
