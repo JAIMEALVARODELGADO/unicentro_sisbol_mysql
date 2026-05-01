@@ -184,8 +184,33 @@ function insertar($datos){
     include("funciones.php");
     $link=conectarbd();
 
-    $sql = "INSERT INTO cliente (tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,tele_cli,fnac_cli,sexo_cli,emai_cli,id_barrio) 
-    VALUES ('".$datos['tpid_cli']."','".$datos['nrod_cli']."','".$datos['exped_cli']."','".$datos['nomb_cli']."','".$datos['apel_cli']."','".$datos['dire_cli']."','".$datos['tele_cli']."','".$datos['fnac_cli']."','".$datos['sexo_cli']."','".$datos['email']."','".$datos['id_barrio']."')";
+    $tpid_cli=$datos['tpid_cli'];
+    $nrod_cli=strtoupper($datos['nrod_cli']);
+    $exped_cli=strtoupper($datos['exped_cli']);
+    $nomb_cli=strtoupper($datos['nomb_cli']);
+    $apel_cli=strtoupper($datos['apel_cli']);
+    $dire_cli=strtoupper($datos['dire_cli']);
+    $tele_cli=$datos['tele_cli'];
+    $fnac_cli=$datos['fnac_cli'];
+    $sexo_cli=$datos['sexo_cli'];
+    $email=$datos['email'];
+    $id_barrio=$datos['id_barrio'];
+
+    $consulta = "SELECT * FROM cliente WHERE nrod_cli = '$nrod_cli' AND tpid_cli = '$tpid_cli'";
+    $result = mysqli_query($link, $consulta);
+    if (mysqli_num_rows($result) > 0) {
+        echo json_encode([
+            "success" => false,
+            "message" => "El cliente ya existe con ese número de identificación y tipo de identificación"
+        ]);
+        mysqli_close($link);
+        return;
+    }
+
+    $sql = "INSERT INTO cliente (tpid_cli,nrod_cli,exped_cli,nomb_cli,apel_cli,dire_cli,
+    tele_cli,fnac_cli,sexo_cli,emai_cli,id_barrio) 
+    VALUES ('".$tpid_cli."','".$nrod_cli."','".$exped_cli."','".$nomb_cli."','".$apel_cli."',
+    '".$dire_cli."','".$tele_cli."','".$fnac_cli."','".$sexo_cli."','".$email."','".$id_barrio."')";
     //ECHO $sql;
 
     if (mysqli_query($link, $sql)) {
@@ -209,8 +234,23 @@ function actualizarCliente($datos){
     include("funciones.php");
     $link=conectarbd();
 
-    $sql = "UPDATE cliente SET tpid_cli='".$datos['tpid_cli']."',nrod_cli='".$datos['nrod_cli']."',exped_cli='".$datos['exped_cli']."',nomb_cli='".$datos['nomb_cli']."',apel_cli='".$datos['apel_cli']."',dire_cli='".$datos['dire_cli']."',tele_cli='".$datos['tele_cli']."',fnac_cli='".$datos['fnac_cli']."',sexo_cli='".$datos['sexo_cli']."',emai_cli='".$datos['email']."',id_barrio='".$datos['id_barrio']."' 
-    WHERE emai_cli = '".$datos['email']."'";
+    $tpid_cli = $datos['tpid_cli'];
+    $nrod_cli = strtoupper($datos['nrod_cli']);
+    $exped_cli = strtoupper($datos['exped_cli']);
+    $nomb_cli = strtoupper($datos['nomb_cli']);
+    $apel_cli = strtoupper($datos['apel_cli']);
+    $dire_cli = strtoupper($datos['dire_cli']);
+    $tele_cli = $datos['tele_cli'];
+    $fnac_cli = $datos['fnac_cli'];
+    $sexo_cli = $datos['sexo_cli'];
+    $email = $datos['email'];
+    $id_barrio = $datos['id_barrio'];
+
+    $sql = "UPDATE cliente SET tpid_cli='".$tpid_cli."',nrod_cli='".$nrod_cli."',
+    exped_cli='".$exped_cli."',nomb_cli='".$nomb_cli."',apel_cli='".$apel_cli."',
+    dire_cli='".$dire_cli."',tele_cli='".$tele_cli."',fnac_cli='".$fnac_cli."',
+    sexo_cli='".$sexo_cli."',emai_cli='".$email."',id_barrio='".$id_barrio."' 
+    WHERE emai_cli = '".$email."'";
     
     if (mysqli_query($link, $sql)) {
         echo json_encode([

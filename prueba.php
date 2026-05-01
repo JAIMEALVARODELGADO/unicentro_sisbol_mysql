@@ -103,7 +103,7 @@ if($encontradoemail==0 && $encontratoid==0){
         $cliente['password']."', '".
         $cliente['id_role']."', '".
         $pet."', '".
-        $terms_conditions."', '".
+        $terms_condition."', '".
         $fecha_creacion."')";
         //echo $sql;
         if ($conn->query($sql) === TRUE) {
