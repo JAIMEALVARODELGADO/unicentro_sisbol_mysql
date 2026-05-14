@@ -11,8 +11,8 @@
 
 <!-- Funcion que valida que no queden en blanco los campos obligatorios -->
 <script languaje="javascript">
-function validar(){
-  //var error = "Por favor, para continuar,\ncomplete los siguientes campos:\n\n";
+async function validar(){
+  var error = "Para continuar,\ncomplete los siguientes campos:\n\n";
   var a = "";
     if (document.form1.tpid_cli.value == "") { a += " Tipo de Documento de Identificación\n"; }
     if (document.form1.nrod_cli.value == "") { a += " Numero de Identificación\n"; }
@@ -31,11 +31,59 @@ function validar(){
 	   //}
 	  }
     if (document.form1.tele_cli.value == "") { a += " Teléfono\n"; }
+    
+    //Aqui se valida que el correo no exista
+    if (document.form1.emai_cli.value != "") {
+        var email = document.form1.emai_cli.value;
+        var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (!re.test(email)) {
+            a += " El formato del correo electrónico no es válido\n";
+        }
+    }
+    var emai_cli = document.form1.emai_cli.value;
+    //alert();
+    /*const existe = await existeEmail(emai_cli);
+
+    if (existe === true) {
+        a += " El correo electrónico ya existe en la base de datos\n";
+    }*/
+
     if (a != ""){
-      alert(error + a);return true;}
+      alert(error + a);
+      return true;
+    }
     
     document.form1.submit()
 }
+
+async function existeEmail(emai_cli){
+    const datos = {
+        opcion: 'existeEmail',
+        email: emai_cli
+    };
+
+    try {
+        const response = await fetch("crudCliente.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos)
+        });
+
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+        const data = await response.json();
+        
+        return data.success; // true si existe, false si no existe
+
+    } catch (error) {
+        console.error('Falló la petición:', error);
+        alert('Error de conexión, intente de nuevo.');
+    } finally {
+        //btn.disabled = false;
+        //btn.textContent = 'Enviar';
+    }
+}
+
 function atras()
 {
   history.go(-1)

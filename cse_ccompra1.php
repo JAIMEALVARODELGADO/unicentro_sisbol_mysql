@@ -10,16 +10,15 @@
 <script type='text/javascript' src='js/jquery.autocomplete.js'></script>
 <!-- Funcion que valida que no queden en blanco los campos obligatorios -->
 <script languaje="javascript">
-function validar(opc_)
-{
-var error = "Por favor, para continuar,\ncomplete los siguientes campos:\n\n";
+
+async function validar(opc_){
+var error = "Para continuar,\n corrija la siguiente información:\n";
 var a = "";
     if (document.form1.tpid_cli.value == "") { a += " Tipo de Documento de Identificación\n"; }
     if (document.form1.nrod_cli.value == "") { a += " Numero de Identificación\n"; }
     if (document.form1.nomb_cli.value == "") { a += " Nombres\n"; }
     if (document.form1.apel_cli.value == "") { a += " Apellidos\n"; }
     
-	
     if(opc_==0){
         if (document.form1.loca_com.value==""){
             a += " Debe seleccionar el local\n";
@@ -34,8 +33,26 @@ var a = "";
         if (document.form1.valo_com.value==""){
             a += " Debe digitar el valor de la compra\n";
         }
+
+        //Aqui se valida que el correo no exista
+        if (document.form1.emai_cli.value != "") {
+            var email = document.form1.emai_cli.value;
+            var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            if (!re.test(email)) {
+                a += " El formato del correo electrónico no es válido\n";
+            }
+        }
+        var emai_cli = document.form1.emai_cli.value;
+        
+        /*const existe = await existeEmail(emai_cli);
+
+        if (existe === true) {
+            a += " El correo electrónico ya existe en la base de datos\n";
+        }*/
 		
     }
+
+    
     if (a != "") 
     { alert(error + a);return true;}
     document.form1.placavehi_bol.disabled=false;
@@ -56,6 +73,35 @@ function buscar(){
   document.form1.submit();
 }
 
+async function existeEmail(emai_cli){
+    const datos = {
+        opcion: 'existeEmail',
+        email: emai_cli
+    };
+
+    try {
+        const response = await fetch("crudCliente.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos)
+        });
+
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+        const data = await response.json();
+        
+        return data.success; // true si existe, false si no existe
+
+    } catch (error) {
+        console.error('Falló la petición:', error);
+        alert('Error de conexión, intente de nuevo.');
+    } finally {
+        //btn.disabled = false;
+        //btn.textContent = 'Enviar';
+    }
+}
+
+
 </script>
 
 <script language='vBscript'>
@@ -73,7 +119,7 @@ function validahoy(fecha_)
   if IsDate(fecha_) then
     diferencia=(DateDiff("d",fecha_,hoy))
   else
-    diferencia=0
+    diferencia=0hoy
   end if
   if(diferencia>=0) then
     validahoy=true
@@ -344,7 +390,7 @@ if (!empty($_POST['nrod_cli']) || !empty($codi_cli)) {
     <tr><td class='Td1' align='center'>Datos de la Compra</td></tr>
 </table>
 <?php
-$hoy = hoy();
+//$hoy = hoy();
 $disponible2 = "";
 if ($placavehi_bol != '') {
     $disponible2 = "disabled";
@@ -387,7 +433,7 @@ if ($placavehi_bol != '') {
         <td class='Td2' width='10%' align='right'>Número:</td>
         <td class='Td2' width='15%' align='left'><input type='text' name='ndoc_com' size='6' maxlength='6' value='<?php echo $ndoc_com; ?>'></td>
         <td class='Td2' width='10%' align='right'>Fecha:</td>
-        <td class='Td2' width='15%' align='left'><input type='text' name='fech_com' size='10' maxlength='10' value='<?php echo $hoy; ?>'></td>
+        <td class='Td2' width='15%' align='left'><input type='text' name='fech_com' id='fech_com' size='10' maxlength='10'></td>
         <td class='Td2' width='10%' align='right'>Valor:</td>
         <td class='Td2' width='15%' align='left'>
             <input type='text' name='valo_com' size='8' maxlength='8' value='<?php echo $valo_com; ?>'>
@@ -435,7 +481,19 @@ mysqli_close($link);
 
 <script type="text/javascript">
     $().ready(function() {
-      
+        
+        const hoy = new Date();
+        // Extraer día, mes y año
+        const dia  = String(hoy.getDate()).padStart(2, '0');
+        const mes  = String(hoy.getMonth() + 1).padStart(2, '0'); // +1 porque los meses van de 0 a 11
+        const anio = hoy.getFullYear();
+
+        // Formato dd/mm/yyyy
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+        // Colocar en el campo de texto
+        document.getElementById("fech_com").value = fechaFormateada;
+
         $("#barrio").autocomplete("autocomp_barrio.php", {
             width: 460,
             matchContains: false,

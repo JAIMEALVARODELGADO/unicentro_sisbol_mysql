@@ -32,6 +32,9 @@ switch($opcion){
     case 'actualizar':
         actualizarCliente($datos);
         break;
+    case 'existeEmail':
+        validarExisteEmail($email);
+        break;
     default:
         echo "Opción no válida";
 }
@@ -265,5 +268,27 @@ function actualizarCliente($datos){
     }
 
     mysqli_close($link);
+}
+
+function validarExisteEmail($email){
+    include("funciones.php");
+    $link = conectarbd();
+
+    $sql = "SELECT * FROM cliente WHERE emai_cli = '$email'";
+    $result = mysqli_query($link, $sql);
+    
+    if (mysqli_num_rows($result) > 0) {
+        echo json_encode([
+            "success" => true,   // true si el correo existe
+            "email"   => $email,
+            "message" => "El correo ya está registrado"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,  // false si no existe
+            "email"   => $email,
+            "message" => "El correo está disponible"
+        ]);
+    }
 }
 ?>
