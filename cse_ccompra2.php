@@ -42,11 +42,11 @@ async function validar(){
     }
     var emai_cli = document.form1.emai_cli.value;
     //alert();
-    /*const existe = await existeEmail(emai_cli);
+    const existe = await existeEmail(emai_cli);
 
     if (existe === true) {
         a += " El correo electrónico ya existe en la base de datos\n";
-    }*/
+    }
 
     if (a != ""){
       alert(error + a);
