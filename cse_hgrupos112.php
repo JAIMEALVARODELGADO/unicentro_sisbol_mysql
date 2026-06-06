@@ -19,7 +19,7 @@ function validar()
 {
 var error = "Por favor, para continuar,\ncomplete los siguientes campos:\n\n";
 var a = ""
-    if (document.form1.desc_tip.value == "") { a += " Descripción\n"; }
+    if (document.form1.desc_tip.value == "") { a += " Descripciï¿½n\n"; }
     if (a != "") 
     { alert(error + a);return true;}
 
@@ -35,11 +35,12 @@ function atras()
 include("funciones.php");
 $link=conectarbd();
 if($_SESSION['gcodi_gru']=='03'){
-  $concateg="SELECT vw_categoria.codi_tip,vw_categoria.desc_tip FROM sisbol.vw_categoria
-  INNER JOIN sisbol.tipo ON tipo.valo_tip=vw_categoria.codi_tip WHERE tipo.codi_tip='$_GET[codi_tip]'";
-  $concateg=pg_query($link,$concateg);
-  if(pg_num_rows($concateg)<>0){
-    $rowcat=pg_fetch_array($concateg);
+  $concateg="SELECT vw_categoria.codi_tip,vw_categoria.desc_tip FROM vw_categoria
+  INNER JOIN tipo ON tipo.valo_tip=vw_categoria.codi_tip WHERE tipo.codi_tip='$_GET[codi_tip]'";
+  //$concateg=pg_query($link,$concateg);
+  $concateg = mysqli_query($link, $concateg);
+  if(mysqli_num_rows($concateg)<>0){
+    $rowcat=mysqli_fetch_array($concateg);
     $valo_tip=$rowcat['codi_tip'];
     $categoria=$rowcat['desc_tip'];
   }
@@ -54,7 +55,7 @@ if($_SESSION['gcodi_gru']=='03'){
 <br>
 <input type='hidden' name='codi_tip' value='<?php echo $_GET['codi_tip'];?>'>
 <table class='Tb0' width='70%'>
-  <th class='Th0' colspan=1>Descripción</th>
+  <th class='Th0' colspan=1>Descripciï¿½n</th>
   <th class='Th0' colspan=1>Valor</th>
   <tr>
     <td class='Td2' width='70%' align='center'><input type='text' name='desc_tip' size='50' maxlength='50' value='<?php echo $_GET['desc_tip'];?>'></td>
