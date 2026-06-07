@@ -12,8 +12,9 @@
 <script languaje="javascript">
 
 async function validar(opc_){
-var error = "Para continuar,\n corrija la siguiente información:\n";
-var a = "";
+    //alert(opc_);
+    var error = "Para continuar,\n corrija la siguiente información:\n";
+    var a = "";
     if (document.form1.tpid_cli.value == "") { a += " Tipo de Documento de Identificación\n"; }
     if (document.form1.nrod_cli.value == "") { a += " Numero de Identificación\n"; }
     if (document.form1.nomb_cli.value == "") { a += " Nombres\n"; }
@@ -35,13 +36,13 @@ var a = "";
         }
 
         //Aqui se valida que el correo no exista
-        if (document.form1.emai_cli.value != "") {
+        /*if (document.form1.emai_cli.value != "") {
             var email = document.form1.emai_cli.value;
             var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             if (!re.test(email)) {
                 a += " El formato del correo electrónico no es válido\n";
             }
-        }
+        }*/
         var emai_cli = document.form1.emai_cli.value;
         
         const existe = await existeEmail(emai_cli);
@@ -74,9 +75,13 @@ function buscar(){
 }
 
 async function existeEmail(emai_cli){
+
+    codi_cli = document.form1.codigo.value; // Obtener el código del cliente actual (si existe)
+    
     const datos = {
         opcion: 'existeEmail',
-        email: emai_cli
+        email: emai_cli,
+        codigo: codi_cli // Enviar el código del cliente para excluirlo de la búsqueda (en caso de edición)
     };
 
     try {

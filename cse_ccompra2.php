@@ -33,13 +33,13 @@ async function validar(){
     if (document.form1.tele_cli.value == "") { a += " Teléfono\n"; }
     
     //Aqui se valida que el correo no exista
-    if (document.form1.emai_cli.value != "") {
+    /*if (document.form1.emai_cli.value != "") {
         var email = document.form1.emai_cli.value;
         var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (!re.test(email)) {
             a += " El formato del correo electrónico no es válido\n";
         }
-    }
+    }*/
     var emai_cli = document.form1.emai_cli.value;
     //alert();
     const existe = await existeEmail(emai_cli);
@@ -57,9 +57,12 @@ async function validar(){
 }
 
 async function existeEmail(emai_cli){
+    codigo = document.form1.codigo.value;
+    //alert(codigo);
     const datos = {
         opcion: 'existeEmail',
-        email: emai_cli
+        email: emai_cli,
+        codigo: codigo
     };
 
     try {
@@ -144,6 +147,7 @@ end function
 include("funciones.php");
 $link=conectarbd();
 $disp='';
+$codi_cli='';
 $tpid_cli="";
 $nrod_cli="";
 $exped_cli="";
@@ -192,7 +196,6 @@ if (!empty($_POST['nrod_cli']) || !empty($_POST['codi_cli'])) {
   }
   //echo $consultacli;
   $consultacli = mysqli_query($link, $consultacli);
-
   if (mysqli_num_rows($consultacli) != 0) {
       $rowcli    = mysqli_fetch_array($consultacli);
       $codi_cli  = $rowcli['codi_cli'];
